@@ -1,6 +1,7 @@
 import express, {
     Application
 } from 'express';
+import { Controller } from './main.controller';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
@@ -16,9 +17,17 @@ import {
 class App {
     /**
      * application object
+     * manages 'express' application
      * @type {Application}
      */
     public application: Application;
+
+    /**
+     * controller object
+     * manages application routes
+     * @type {Controller}
+     */
+    public controller: Controller;
 
     /**
      * constructor
@@ -28,6 +37,7 @@ class App {
     constructor() {
         this.application = express();
         this._setConfig();
+        this.controller = new Controller(this.application);
     }
 
     /**
