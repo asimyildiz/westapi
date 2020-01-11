@@ -1,14 +1,22 @@
 import { Request, Response } from 'express';
+import { GoogleMapsClientWithPromise } from '@google/maps';
 import { MongooseDocument, Mongoose } from 'mongoose';
 import { City } from '../models/city.model';
 import { County } from '../models/county.model';
-import { Location } from '../models/location.model';
+import { Location, getLocation } from '../models/location.model';
+import * as ErrorMessages from '../constants/errors.constants';
 
 /**
  * @class LocationService
  * @classdesc location service api methods
  */
 export class LocationService {
+/**
+     * constructor
+     * @param _googleMapApi {GoogleMapsClientWithPromise} google map api object - constructor assignment
+     */
+    constructor(private _googleMapApi: GoogleMapsClientWithPromise) { }
+
     /**
      * add a new city into database
      * @param request {Request} service request object
@@ -32,7 +40,13 @@ export class LocationService {
      */
     public getAllCities(request: Request, response: Response) {
         City.find({})
-            .populate('counties')
+            .populate({
+                path: 'counties',
+                populate: {
+                    path: 'locations',
+                    model: 'Location'
+                }
+            })
             .exec((error: Error, document: MongooseDocument) => {
                 if (error) {
                     response.send(error);
@@ -56,10 +70,16 @@ export class LocationService {
             }
 
             City.findOneAndUpdate({ _id: request.params.id }, { $push: { counties: document._id }}, { new: true })
-                .populate('counties')
+                .populate({
+                    path: 'counties',
+                    populate: {
+                        path: 'locations',
+                        model: 'Location'
+                    }
+                })
                 .exec((errorCity: Error, documentCity: any) => {
                     if (errorCity) {
-                        response.send(error);
+                        response.send(errorCity);
                     }
 
                     response.json(documentCity);    
@@ -85,18 +105,68 @@ export class LocationService {
     }
 
     /**
+     * add a new location into database
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public addLocation(request: Request, response: Response) {
+        const newLocation = new Location(request.body);
+        newLocation.save((error: Error, document: MongooseDocument) => {
+            if (error) {
+                response.send(error);
+                return;
+            }
+
+            County.findOneAndUpdate({ _id: request.params.id }, { $push: { locations: document._id }}, { new: true })
+                .populate('locations')
+                .exec((errorCounty: Error, documentCounty: any) => {
+                    if (errorCounty) {
+                        response.send(errorCounty);
+                    }
+
+                    response.json(documentCounty);    
+                });
+        });
+    }
+
+    /**
      * list all locations from database
      * @param request {Request} service request object
      * @param response {Response} service response object
      */
-    public getAllLocations(req: Request, res: Response) {
+    public getAllLocations(request: Request, response: Response) {
         Location.find({}, (error: Error, document: MongooseDocument) => {
             if (error) {
-                res.send(error);
+                response.send(error);
                 return;
             }
-            res.json(document);
+            response.json(document);
         });
+    }
+
+    /**
+     * find location between two points
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public getDirection(request: Request, response: Response) {
+        const locationData = request.body.data;
+        if (Array.isArray(locationData) && locationData.length == 2) {
+            const fromLocation = getLocation(new Location(locationData[0]));
+            const toLocation = getLocation(new Location(locationData[1]));
+            this._googleMapApi.directions({
+                origin: fromLocation,
+                destination: toLocation,
+            }).asPromise().then((mapResponse) => {
+                console.log(mapResponse.json);
+                response.json(mapResponse.json);
+            })
+            .catch((error) => {
+                response.send(error);
+            });
+        }else {
+            response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETDIRECTION_1000);
+        }
     }
 
     /**

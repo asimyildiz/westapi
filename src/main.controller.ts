@@ -19,7 +19,8 @@ export class Controller {
      * @param _application {Application} application object - constructor assignment
      */
     constructor(private _application: Application) {
-        this._locationService = new LocationService();
+        const googleMapApi = this._application.get('googleMapApi');
+        this._locationService = new LocationService(googleMapApi);
         this.routes();
     }
 
@@ -33,5 +34,10 @@ export class Controller {
 
         this._application.route('/addCounty/:id').post(this._locationService.addCounty);
         this._application.route('/getAllCounties').get(this._locationService.getAllCounties);
+
+        this._application.route('/addLocation/:id').post(this._locationService.addLocation);
+        this._application.route('/getAllLocations').get(this._locationService.getAllLocations);
+
+        this._application.route('/getDirection').post(this._locationService.getDirection.bind(this._locationService));
     }
 }

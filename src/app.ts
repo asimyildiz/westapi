@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import GoogleMapAPI from '@google/maps';
 import { Controller } from './main.controller';
 
 import {
@@ -38,6 +39,7 @@ class App {
         this.application = express();
         this._setConfig();
         this._setDatabaseConfig();
+        this._setGoogleMapAPIConfig();
         this.controller = new Controller(this.application);
     }
 
@@ -68,10 +70,22 @@ class App {
      */
     private _setDatabaseConfig() {
         mongoose.Promise = global.Promise;
-        mongoose.connect(DATABASE_CONNECTION, { useNewUrlParser: true}, () => {
+        mongoose.connect(DATABASE_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
             // drop database if needed
             // mongoose.connection.db.dropDatabase();
         });
+    }
+
+    /**
+     * set google map api config
+     * @private
+     */
+    private _setGoogleMapAPIConfig() {         
+        const googleMapApi = GoogleMapAPI.createClient({
+            key: 'AIzaSyCdzYtHIF_8y5wvAe9ad30VuaYB0USZdhY',
+            Promise: global.Promise 
+        });
+        this.application.set('googleMapApi', googleMapApi);
     }
 }
 

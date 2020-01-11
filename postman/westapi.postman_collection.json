@@ -1,0 +1,231 @@
+{
+	"info": {
+		"_postman_id": "ec7dabe7-fd2f-47b0-afe6-02948b21d176",
+		"name": "westapi",
+		"description": "westapi test calls",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "location",
+			"item": [
+				{
+					"name": "addcity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"İstanbul\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/addCity",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"addCity"
+							]
+						},
+						"description": "add city to westapi"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getAllCities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9001/getAllCities",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getAllCities"
+							]
+						},
+						"description": "getAllCities"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/addCounty/5e19ead26ec2d894a5c45738",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Beşiktaş\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/addCounty/5e19fa3be6fcc2e770f54d6c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"addCounty",
+								"5e19fa3be6fcc2e770f54d6c"
+							]
+						},
+						"description": "addCounty example"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getAllCounties",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9001/getAllCounties",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getAllCounties"
+							]
+						},
+						"description": "getAllCounties"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/addLocation/5e19fa4fe6fcc2e770f54d6e",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ayazağa Meydan Park İçi Yolu\",\r\n    \"detail\": \"Ayazağa\",\r\n    \"latitude\": \"41.115666\",\r\n    \"longitude\": \"28.998620\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/addLocation/5e19fa4fe6fcc2e770f54d6e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"addLocation",
+								"5e19fa4fe6fcc2e770f54d6e"
+							]
+						},
+						"description": "addLocation Sarıyer - Ayazağa - Ayazağa Meydan Park"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getAllLocations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9001/getAllLocations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getAllLocations"
+							]
+						},
+						"description": "getAllLocations"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/addLocation/5e1a4170bc23d00399f38141",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Digitürk Genel Müdürlüğü\",\r\n    \"detail\": \"Cihannüma\",\r\n    \"latitude\": \"41.049881\",\r\n    \"longitude\": \"29.006920\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/addLocation/5e1a4170bc23d00399f38141",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"addLocation",
+								"5e1a4170bc23d00399f38141"
+							]
+						},
+						"description": "addLocation - Cihannüma - Digitürk Genel Müdürlüğü"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getDirection",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\": [\r\n    \t{\r\n\t    \t\"name\": \"Digitürk Genel Müdürlüğü\",\r\n\t\t    \"detail\": \"Cihannüma\",\r\n\t\t    \"latitude\": \"41.049881\",\r\n\t\t    \"longitude\": \"29.006920\"\r\n\t    },\r\n\t    {\r\n\t    \t\"name\": \"Ayazağa Meydan Park İçi Yolu\",\r\n\t\t    \"detail\": \"Ayazağa\",\r\n\t\t    \"latitude\": \"41.115666\",\r\n\t\t    \"longitude\": \"28.998620\"\r\n\t    }\r\n\t]\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/getDirection",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getDirection"
+							]
+						},
+						"description": "getDirection using googleMapApi"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
