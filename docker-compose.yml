@@ -1,0 +1,16 @@
+version: "3.1"
+
+services:
+  db:
+    container_name: mongoDB
+    image: mongo:latest
+    restart: always
+    volumes:
+      - westapidata:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE= WestApi
+    ports:
+      - 27017:27017
+volumes:
+  westapidata:
+    external: true

@@ -5,6 +5,12 @@
 export const PORT = 9001;
 
 /**
+ * database connection string
+ * @type {String}
+ */
+export const DATABASE_CONNECTION = 'mongodb://localhost:27017/WestApi';
+
+/**
  * received json data limit
  * @type {String}
  */

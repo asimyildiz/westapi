@@ -1,11 +1,11 @@
-import express, {
-    Application
-} from 'express';
-import { Controller } from './main.controller';
+import express, { Application } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import mongoose from 'mongoose';
+import { Controller } from './main.controller';
 
 import {
+    DATABASE_CONNECTION,
     JSON_DATA_LIMIT,
     FORM_DATA_LIMIT
 } from './constants/westapi.contants';
@@ -37,6 +37,7 @@ class App {
     constructor() {
         this.application = express();
         this._setConfig();
+        this._setDatabaseConfig();
         this.controller = new Controller(this.application);
     }
 
@@ -58,6 +59,19 @@ class App {
         }));
 
         this.application.use(cors());
+    }
+
+    /**
+     * set database config
+     * for now we are using mongoDB and mongoose to manage database
+     * @private
+     */
+    private _setDatabaseConfig() {
+        mongoose.Promise = global.Promise;
+        mongoose.connect(DATABASE_CONNECTION, { useNewUrlParser: true}, () => {
+            // drop database if needed
+            // mongoose.connection.db.dropDatabase();
+        });
     }
 }
 

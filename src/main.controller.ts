@@ -1,9 +1,5 @@
-import {
-    Application
-} from 'express';
-import {
-    LocationService
-} from './services/location.service';
+import { Application } from 'express';
+import { LocationService } from './services/location.service';
 
 /**
  * @class Controller
@@ -20,8 +16,9 @@ export class Controller {
      * constructor
      * init location service
      * set routes
+     * @param _application {Application} application object - constructor assignment
      */
-    constructor(private application: Application) {
+    constructor(private _application: Application) {
         this._locationService = new LocationService();
         this.routes();
     }
@@ -30,6 +27,11 @@ export class Controller {
      * set routes for service apis
      */
     public routes() {
-        this.application.route('/').get(this._locationService.hello);
+        this._application.route('/').get(this._locationService.hello);
+        this._application.route('/addCity').post(this._locationService.addCity);
+        this._application.route('/getAllCities').get(this._locationService.getAllCities);
+
+        this._application.route('/addCounty/:id').post(this._locationService.addCounty);
+        this._application.route('/getAllCounties').get(this._locationService.getAllCounties);
     }
 }
