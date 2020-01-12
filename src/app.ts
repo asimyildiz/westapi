@@ -8,7 +8,8 @@ import { Controller } from './main.controller';
 import {
     DATABASE_CONNECTION,
     JSON_DATA_LIMIT,
-    FORM_DATA_LIMIT
+    FORM_DATA_LIMIT,
+    GOOGLEMAP_API_KEY
 } from './constants/westapi.contants';
 
 /**
@@ -82,7 +83,7 @@ class App {
      */
     private _setGoogleMapAPIConfig() {         
         const googleMapApi = GoogleMapAPI.createClient({
-            key: 'AIzaSyCdzYtHIF_8y5wvAe9ad30VuaYB0USZdhY',
+            key: GOOGLEMAP_API_KEY,
             Promise: global.Promise 
         });
         this.application.set('googleMapApi', googleMapApi);

@@ -11,6 +11,12 @@ export const PORT = 9001;
 export const DATABASE_CONNECTION = 'mongodb://localhost:27017/WestApi';
 
 /**
+ * google map api key
+ * @type {String}
+ */
+export const GOOGLEMAP_API_KEY = 'AIzaSyCdzYtHIF_8y5wvAe9ad30VuaYB0USZdhY';
+
+/**
  * received json data limit
  * @type {String}
  */
