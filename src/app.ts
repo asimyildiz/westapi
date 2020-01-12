@@ -3,13 +3,17 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import GoogleMapAPI from '@google/maps';
+import multer from 'multer';
+import * as path from 'path';
 import { Controller } from './main.controller';
+import { FileHelper } from './utils/file.helper';
 
-import {
-    DATABASE_CONNECTION,
-    JSON_DATA_LIMIT,
-    FORM_DATA_LIMIT,
-    GOOGLEMAP_API_KEY
+import { 
+    DATABASE_CONNECTION, 
+    JSON_DATA_LIMIT, 
+    FORM_DATA_LIMIT, 
+    GOOGLEMAP_API_KEY,
+    UPLOAD_FOLDER_NAME
 } from './constants/westapi.contants';
 
 /**
@@ -41,6 +45,7 @@ class App {
         this._setConfig();
         this._setDatabaseConfig();
         this._setGoogleMapAPIConfig();
+        this._setFileUploadConfig();
         this.controller = new Controller(this.application);
     }
 
@@ -87,6 +92,26 @@ class App {
             Promise: global.Promise 
         });
         this.application.set('googleMapApi', googleMapApi);
+    }
+
+    /**
+     * set file upload config
+     * @private
+     */
+    private _setFileUploadConfig() {
+        const storage = multer.diskStorage({    
+            destination: function (request: any, file: any, cb: any) {
+                cb(null, UPLOAD_FOLDER_NAME)
+            },
+        
+            filename: function (request: any, file: any, cb: any) {
+                const fileName = request && request.body && request.body.name || file.filename;
+                const cleanFileName = FileHelper.createFileName(fileName);
+                const fileExtension = path.extname(file.originalname);
+                cb(null, `${cleanFileName}${fileExtension}` );
+            }
+        });
+        this.application.set('fileStorage', storage);
     }
 }
 

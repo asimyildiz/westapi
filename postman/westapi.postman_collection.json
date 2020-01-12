@@ -225,6 +225,62 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "vehicle",
+			"item": [
+				{
+					"name": "http://localhost:9001/addVehicle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Eco VIP - Mercedes Vito etc.",
+									"type": "text"
+								},
+								{
+									"key": "maxPerson",
+									"value": "6",
+									"type": "text"
+								},
+								{
+									"key": "maxBaggage",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "isPrivate",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/C:/Users/DTMYILDIZ/Desktop/mobile.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:9001/addVehicle",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"addVehicle"
+							]
+						},
+						"description": "addVehicle"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}
