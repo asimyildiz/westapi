@@ -7,11 +7,11 @@ import { Location, getLocation } from '../models/location.model';
 import * as ErrorMessages from '../constants/errors.constants';
 
 /**
- * @class LocationService
+ * @class LocationServices
  * @classdesc location service api methods
  */
-export class LocationService {
-/**
+export class LocationServices {
+    /**
      * constructor
      * @param _googleMapApi {GoogleMapsClientWithPromise} google map api object - constructor assignment
      */
@@ -80,6 +80,7 @@ export class LocationService {
                 .exec((errorCity: Error, documentCity: any) => {
                     if (errorCity) {
                         response.send(errorCity);
+                        return;
                     }
 
                     response.json(documentCity);    
@@ -122,6 +123,7 @@ export class LocationService {
                 .exec((errorCounty: Error, documentCounty: any) => {
                     if (errorCounty) {
                         response.send(errorCounty);
+                        return;
                     }
 
                     response.json(documentCounty);    

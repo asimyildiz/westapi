@@ -7,10 +7,13 @@ const ReservationCustomerSchema = new mongoose.Schema({
     },
     customer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Reservation'
+        ref: 'Customer'
     },
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: {
+        virtuals: true
+    }
 });
 
 export const ReservationCustomer = mongoose.model<mongoose.Document>('ReservationCustomer', ReservationCustomerSchema);

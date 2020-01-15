@@ -76,7 +76,7 @@
 							"raw": "{\r\n    \"name\": \"Beşiktaş\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/addCounty/5e19fa3be6fcc2e770f54d6c",
+							"raw": "http://localhost:9001/addCounty/5e1f347ebccc07a5a59830dd",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -84,7 +84,7 @@
 							"port": "9001",
 							"path": [
 								"addCounty",
-								"5e19fa3be6fcc2e770f54d6c"
+								"5e1f347ebccc07a5a59830dd"
 							]
 						},
 						"description": "addCounty example"
@@ -124,10 +124,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Ayazağa Meydan Park İçi Yolu\",\r\n    \"detail\": \"Ayazağa\",\r\n    \"latitude\": \"41.115666\",\r\n    \"longitude\": \"28.998620\"\r\n}"
+							"raw": "{\r\n    \"name\": \"Ayazağa Meydan Park İçi Yolu\",\r\n    \"detail\": \"Ayazağa\",\r\n    \"latitude\": \"41.115666\",\r\n    \"longitude\": \"28.998620\",\r\n    \"type\": \"Other\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/addLocation/5e19fa4fe6fcc2e770f54d6e",
+							"raw": "http://localhost:9001/addLocation/5e1f348fbccc07a5a59830df",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -135,7 +135,7 @@
 							"port": "9001",
 							"path": [
 								"addLocation",
-								"5e19fa4fe6fcc2e770f54d6e"
+								"5e1f348fbccc07a5a59830df"
 							]
 						},
 						"description": "addLocation Sarıyer - Ayazağa - Ayazağa Meydan Park"
@@ -175,10 +175,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Digitürk Genel Müdürlüğü\",\r\n    \"detail\": \"Cihannüma\",\r\n    \"latitude\": \"41.049881\",\r\n    \"longitude\": \"29.006920\"\r\n}"
+							"raw": "{\r\n    \"name\": \"Digitürk Genel Müdürlüğü\",\r\n    \"detail\": \"Cihannüma\",\r\n    \"latitude\": \"41.049881\",\r\n    \"longitude\": \"29.006920\",\r\n    \"type\": \"Other\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/addLocation/5e1a4170bc23d00399f38141",
+							"raw": "http://localhost:9001/addLocation/5e1f3489bccc07a5a59830de",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -186,7 +186,7 @@
 							"port": "9001",
 							"path": [
 								"addLocation",
-								"5e1a4170bc23d00399f38141"
+								"5e1f3489bccc07a5a59830de"
 							]
 						},
 						"description": "addLocation - Cihannüma - Digitürk Genel Müdürlüğü"
@@ -206,7 +206,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"data\": [\r\n    \t{\r\n\t    \t\"name\": \"Digitürk Genel Müdürlüğü\",\r\n\t\t    \"detail\": \"Cihannüma\",\r\n\t\t    \"latitude\": \"41.049881\",\r\n\t\t    \"longitude\": \"29.006920\"\r\n\t    },\r\n\t    {\r\n\t    \t\"name\": \"Ayazağa Meydan Park İçi Yolu\",\r\n\t\t    \"detail\": \"Ayazağa\",\r\n\t\t    \"latitude\": \"41.115666\",\r\n\t\t    \"longitude\": \"28.998620\"\r\n\t    }\r\n\t]\r\n}"
+							"raw": "{\r\n    \"data\": [\r\n    \t{\r\n\t    \t\"name\": \"Digitürk Genel Müdürlüğü\",\r\n\t\t    \"detail\": \"Cihannüma\",\r\n\t\t    \"latitude\": \"41.049881\",\r\n\t\t    \"longitude\": \"29.006920\",\r\n\t\t    \"type\": \"Other\"\r\n\t    },\r\n\t    {\r\n\t    \t\"name\": \"Ayazağa Meydan Park İçi Yolu\",\r\n\t\t    \"detail\": \"Ayazağa\",\r\n\t\t    \"latitude\": \"41.115666\",\r\n\t\t    \"longitude\": \"28.998620\",\r\n\t\t    \"type\": \"Other\"\r\n\t    }\r\n\t]\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9001/getDirection",
@@ -220,6 +220,37 @@
 							]
 						},
 						"description": "getDirection using googleMapApi"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/addCounty/5e1f243a0c5e0683a9c5facc",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Sarıyer\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/addCounty/5e1f347ebccc07a5a59830dd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"addCounty",
+								"5e1f347ebccc07a5a59830dd"
+							]
+						},
+						"description": "addCounty for Sarıyer"
 					},
 					"response": []
 				}
@@ -260,7 +291,7 @@
 								{
 									"key": "images",
 									"type": "file",
-									"src": "/C:/Users/DTMYILDIZ/Desktop/mobile.png"
+									"src": "/D:/Development/Node/westapi/postman/mobile.png"
 								}
 							]
 						},
@@ -276,6 +307,257 @@
 							]
 						},
 						"description": "addVehicle"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/addVehiclePrice/5e1f26814e62ea91f062e174",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"minPrice\": 140,\n\t\"price\": 4,\n\t\"minDistance\": 100,\n\t\"currency\": \"TRY\",\n\t\"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/addVehiclePrice/5e1f34bcbccc07a5a59830e2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"addVehiclePrice",
+								"5e1f34bcbccc07a5a59830e2"
+							]
+						},
+						"description": "addVehiclePrice request"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getAllVehiclePrices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9001/getAllVehiclePrices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getAllVehiclePrices"
+							]
+						},
+						"description": "getAllVehiclePrices"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/addVehiclePricesDiscount/5e1f34c6bccc07a5a59830e3",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "aef58eb6-2bda-4cc8-b923-b77613c10111",
+								"exec": [
+									"let startDate = new Date().toJSON();\r",
+									"pm.environment.set('startDate', startDate);\r",
+									"\r",
+									"let endDate = new Date();\r",
+									"endDate.setDate(endDate.getDate() + 5);\r",
+									"pm.environment.set('endDate', endDate);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"discount\": 10,\n\t\"minPriceToApply\": 100,\n\t\"startDate\": \"{{startDate}}\",\n\t\"endDate\": \"{{endDate}}\",\n\t\"name\": \"Kış İndirimi\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/addVehiclePricesDiscount/5e1f34c6bccc07a5a59830e3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"addVehiclePricesDiscount",
+								"5e1f34c6bccc07a5a59830e3"
+							]
+						},
+						"description": "addVehiclePricesDiscount method"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getAllVehiclePricesDiscounts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9001/getAllVehiclePricesDiscounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getAllVehiclePricesDiscounts"
+							]
+						},
+						"description": "getAllVehiclePricesDiscounts"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/addService",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Ücretsiz İptal ve Değişiklik",
+									"type": "text"
+								},
+								{
+									"key": "icon",
+									"type": "file",
+									"src": "/D:/Development/Node/westapi/postman/ucretsiz-iptal.png"
+								},
+								{
+									"key": "isPaid",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:9001/addService",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"addService"
+							]
+						},
+						"description": "addService method"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getAllServices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9001/getAllServices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getAllServices"
+							]
+						},
+						"description": "getAllServices"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getAllServicesForAllVehicles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9001/getAllServicesForAllVehicles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getAllServicesForAllVehicles"
+							]
+						},
+						"description": "getAllServicesForAllVehicles method"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getAllVehicles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9001/getAllVehicles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getAllVehicles"
+							]
+						},
+						"description": "getAllVehicles method"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/addServiceForVehicle/5e1f34bcbccc07a5a59830e2/5e1f41aec96f467305495fe2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/addServiceForVehicle/5e1f34bcbccc07a5a59830e2/5e1f41aec96f467305495fe2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"addServiceForVehicle",
+								"5e1f34bcbccc07a5a59830e2",
+								"5e1f41aec96f467305495fe2"
+							]
+						},
+						"description": "addServiceForVehicle method"
 					},
 					"response": []
 				}

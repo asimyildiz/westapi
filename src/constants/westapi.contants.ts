@@ -29,6 +29,12 @@ export const ALLOWED_FILE_TYPES = /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/;
 export const UPLOAD_FOLDER_NAME = './uploads/';
 
 /**
+ * folder name to upload icons
+ * @type {string}
+ */
+export const UPLOAD_ICON_FOLDER_NAME = './uploads/icons/'
+
+/**
  * received json data limit
  * @type {string}
  */

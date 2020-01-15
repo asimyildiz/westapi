@@ -13,7 +13,8 @@ import {
     JSON_DATA_LIMIT, 
     FORM_DATA_LIMIT, 
     GOOGLEMAP_API_KEY,
-    UPLOAD_FOLDER_NAME
+    UPLOAD_FOLDER_NAME,
+    UPLOAD_ICON_FOLDER_NAME
 } from './constants/westapi.contants';
 
 /**
@@ -46,6 +47,7 @@ class App {
         this._setDatabaseConfig();
         this._setGoogleMapAPIConfig();
         this._setFileUploadConfig();
+        this._setIconUploadConfig();
         this.controller = new Controller(this.application);
     }
 
@@ -112,6 +114,25 @@ class App {
             }
         });
         this.application.set('fileStorage', storage);
+    }
+
+    /**
+     * set icon upload config
+     * @private
+     */
+    private _setIconUploadConfig() {
+        const storage = multer.diskStorage({    
+            destination: function (request: any, file: any, cb: any) {
+                cb(null, UPLOAD_ICON_FOLDER_NAME)
+            },
+        
+            filename: function (request: any, file: any, cb: any) {                
+                const cleanFileName = FileHelper.createFileName(file.originalname.replace(/\.[^/.]+$/, ""));
+                const fileExtension = path.extname(file.originalname);
+                cb(null, `${cleanFileName}${fileExtension}` );
+            }
+        });
+        this.application.set('iconFileStorage', storage);
     }
 }
 

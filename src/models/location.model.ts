@@ -9,6 +9,11 @@ const LocationSchema = new mongoose.Schema({
         type: String,
         required: 'Location detail field is required'
     },
+    type: {
+        type: String,
+        required: 'Location type field is required',
+        enum: ['Airport', 'Hotel', 'Touristic', 'Center', 'Other'],        
+    },
     latitude: {
         type: String
     },

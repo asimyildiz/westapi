@@ -33,7 +33,10 @@ const VehicleSchema = new mongoose.Schema({
         ref: 'Reservation'
     }]
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: {
+        virtuals: true
+    }
 });
 
 export const Vehicle = mongoose.model<mongoose.Document>('Vehicle', VehicleSchema);

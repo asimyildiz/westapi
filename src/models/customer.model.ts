@@ -18,12 +18,18 @@ const CustomerSchema = new mongoose.Schema({
     passport: {
         type: String
     },
+    password: {
+        type: String
+    },
     reservationCustomers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ReservationCustomer'
     }]
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: {
+        virtuals: true
+    }
 });
 
 export const Customer = mongoose.model<mongoose.Document>('Customer', CustomerSchema);

@@ -10,7 +10,10 @@ const VehicleServiceSchema = new mongoose.Schema({
         ref: 'Service'
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: {
+        virtuals: true
+    }
 });
 
 export const VehicleService = mongoose.model<mongoose.Document>('VehicleService', VehicleServiceSchema);

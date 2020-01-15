@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const VehiclePricesSchema = new mongoose.Schema({
     vehicle: {
@@ -17,6 +17,11 @@ const VehiclePricesSchema = new mongoose.Schema({
         type: Number,
         required: 'Price distance field is required'
     },
+    currency: {
+        type: String,
+        default: 'TRY',
+        enum: ['TRY', 'USD', 'EUR']
+    },
     isActive: {
         type: Boolean,
         default: false
@@ -30,7 +35,21 @@ const VehiclePricesSchema = new mongoose.Schema({
         ref: 'Reservation'
     }]
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: {
+        virtuals: true
+    }
+});
+
+// this is to ensure that there is only one active price for a currency
+// if we try to set multiple active price, mongoose will fire an exception
+VehiclePricesSchema.index({
+    currency: 1    
+}, {
+    unique: true,
+    partialFilterExpression: {
+        isActive: { $eq: true }
+    }
 });
 
 export const VehiclePrices = mongoose.model<mongoose.Document>('VehiclePrices', VehiclePricesSchema);
