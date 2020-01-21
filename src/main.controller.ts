@@ -1,4 +1,5 @@
 import { Application } from 'express';
+import { ApplicationServices } from './services/application.service';
 import { LocationServices } from './services/location.service';
 import { VehicleServices } from './services/vehicle.service';
 import { ReservationServices } from './services/reservation.service';
@@ -8,6 +9,13 @@ import { ReservationServices } from './services/reservation.service';
  * @classdesc controller for WestApi service which manages routes
  */
 export class Controller {
+    /**
+     * application service object
+     * @type {ApplicationServices}
+     * @private
+     */
+    private _applicationServices!: ApplicationServices;
+
     /**
      * location service object
      * @type {LocationServices}
@@ -36,10 +44,19 @@ export class Controller {
      * @param _application {Application} application object - constructor assignment
      */
     constructor(private _application: Application) {
+        this._initApplicationService();
         this._initLocationService();
         this._initVehicleService();
         this._initReservationService();
         this.routes();
+    }
+
+    /**
+     * init application service with current application object
+     * @private
+     */
+    private _initApplicationService() {
+        this._applicationServices = new ApplicationServices(this._application);
     }
 
     /**
@@ -48,7 +65,9 @@ export class Controller {
      */
     private _initLocationService() {
         const googleMapApi = this._application.get('googleMapApi');
-        this._locationServices = new LocationServices(googleMapApi);
+        const language = this._application.get('language');
+        const country = this._application.get('country');
+        this._locationServices = new LocationServices(language, country, googleMapApi);
     }
 
     /**
@@ -74,9 +93,20 @@ export class Controller {
      */
     public routes() {
         this._application.route('/').get(this._locationServices.hello);
+        this._addApplicationServiceRoutes();
         this._addLocationServiceRoutes();
         this._addVehicleServiceRoutes();
         this._addReservationServiceRoutes();
+    }
+
+    /**
+     * add routes for application related services
+     * @private
+     */
+    private _addApplicationServiceRoutes() {
+        this._application.route('/init').post(this._applicationServices.init.bind(this._applicationServices));
+        this._application.route('/getApplicationLanguages').get(this._applicationServices.getApplicationLanguages);
+        this._application.route('/getApplicationCountries').get(this._applicationServices.getApplicationCountries);
     }
 
     /**
@@ -94,6 +124,8 @@ export class Controller {
         this._application.route('/getAllLocations').get(this._locationServices.getAllLocations);
 
         this._application.route('/getDirection').post(this._locationServices.getDirection.bind(this._locationServices));
+        this._application.route('/getClosestPlaces').post(this._locationServices.getClosestPlaces.bind(this._locationServices));
+        this._application.route('/getLocationAddress').post(this._locationServices.getLocationAddress.bind(this._locationServices));
     }
 
     /**

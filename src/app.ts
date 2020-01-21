@@ -14,7 +14,9 @@ import {
     FORM_DATA_LIMIT, 
     GOOGLEMAP_API_KEY,
     UPLOAD_FOLDER_NAME,
-    UPLOAD_ICON_FOLDER_NAME
+    UPLOAD_ICON_FOLDER_NAME,
+    DEFAULT_APPLICATION_LANGUAGE,
+    DEFAULT_APPLICATION_COUNTRY
 } from './constants/westapi.contants';
 
 /**
@@ -44,6 +46,7 @@ class App {
     constructor() {
         this.application = express();
         this._setConfig();
+        this._setApplicationConfig();
         this._setDatabaseConfig();
         this._setGoogleMapAPIConfig();
         this._setFileUploadConfig();
@@ -69,6 +72,17 @@ class App {
         }));
 
         this.application.use(cors());
+    }
+
+    /**
+     * set initial application config
+     * set language to default language
+     * set country to default country
+     * @private
+     */
+    private _setApplicationConfig() {
+        this.application.set('language', DEFAULT_APPLICATION_LANGUAGE);
+        this.application.set('country', DEFAULT_APPLICATION_COUNTRY);        
     }
 
     /**

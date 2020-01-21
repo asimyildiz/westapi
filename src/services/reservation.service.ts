@@ -7,7 +7,6 @@ import { MongooseDocument, Mongoose } from 'mongoose';
  * @classdesc reservation service api methods
  */
 export class ReservationServices {
-
     /**
      * add a new reservation into database
      * @param request {Request} service request object

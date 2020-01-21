@@ -45,3 +45,33 @@ export const JSON_DATA_LIMIT = '50mb';
  * @type {string}
  */
 export const FORM_DATA_LIMIT = '50mb';
+
+/**
+ * application languages
+ * @type {Array<string>}
+ */
+export const APPLICATION_LANGUAGES = ['tr'];
+
+/**
+ * application countries
+ * @type {Array<string>}
+ */
+export const APPLICATION_COUNTRIES = ['tr'];
+
+/**
+ * default application language
+ * @type {string}
+ */
+export const DEFAULT_APPLICATION_LANGUAGE = 'tr';
+
+/**
+ * default application country
+ * @type {string}
+ */
+export const DEFAULT_APPLICATION_COUNTRY = 'tr';
+
+/**
+ * default radius for address search
+ * @type {Number}
+ */
+export const DEFAULT_RADIUS_FOR_SEARCH = 5000;

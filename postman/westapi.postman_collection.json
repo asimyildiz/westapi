@@ -253,6 +253,96 @@
 						"description": "addCounty for Sarıyer"
 					},
 					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getClosestPlaces",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input\": \"Başa\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/getClosestPlaces",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getClosestPlaces"
+							]
+						},
+						"description": "getClosestPlaces to lat long"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getLocationAddress",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"latitude\": \"41.049881\",\n\t\"longitude\": \"29.006920\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/getLocationAddress",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getLocationAddress"
+							]
+						},
+						"description": "getLocationAddress from latitude and longitude"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getClosestPlaces",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input\": \"Ba\",\n\t\"latitude\": \"41.0082\",\n\t\"longitude\": \"28.9784\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/getClosestPlaces",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getClosestPlaces"
+							]
+						},
+						"description": "getClosestPlaces using lat and long"
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -558,6 +648,82 @@
 							]
 						},
 						"description": "addServiceForVehicle method"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "application",
+			"item": [
+				{
+					"name": "http://localhost:9001/getApplicationLanguages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9001/getApplicationLanguages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getApplicationLanguages"
+							]
+						},
+						"description": "get application languages"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getApplicationCountries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9001/getApplicationCountries",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getApplicationCountries"
+							]
+						},
+						"description": "get application countries"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9001/init",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"language\": \"tr\",\n\t\"country\": \"tr\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/init",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"init"
+							]
+						},
+						"description": "init application"
 					},
 					"response": []
 				}
