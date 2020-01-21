@@ -126,6 +126,7 @@ export class Controller {
         this._application.route('/getDirection').post(this._locationServices.getDirection.bind(this._locationServices));
         this._application.route('/getClosestPlaces').post(this._locationServices.getClosestPlaces.bind(this._locationServices));
         this._application.route('/getLocationAddress').post(this._locationServices.getLocationAddress.bind(this._locationServices));
+        this._application.route('/getRoute').post(this._locationServices.getRoute.bind(this._locationServices));
     }
 
     /**

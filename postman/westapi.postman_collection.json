@@ -343,6 +343,36 @@
 						"description": "getClosestPlaces using lat and long"
 					},
 					"response": []
+				},
+				{
+					"name": "http://localhost:9001/getRoute",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"fromLatitude\": \"41.049881\",\n\t\"fromLongitude\": \"29.006920\",\n\t\"toLatitude\": \"41.115666\",\n\t\"toLongitude\": \"28.998620\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/getRoute",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"getRoute"
+							]
+						},
+						"description": "getRoute method"
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}

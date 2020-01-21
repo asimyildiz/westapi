@@ -186,6 +186,30 @@ export class LocationServices {
     }
 
     /**
+     * find location between two points using latitude and longitude
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public getRoute(request: Request, response: Response) {
+        const fromLatitude = request.body.fromLatitude;
+        const fromLongitude = request.body.fromLongitude;
+        const toLatitude = request.body.toLatitude;
+        const toLongitude = request.body.toLongitude;
+        if (fromLatitude && fromLongitude && toLatitude && toLongitude) {
+            this._googleMapApi.directions({
+                origin: `${fromLatitude},${fromLongitude}`,
+                destination: `${toLatitude},${toLongitude}`,
+            })
+            .asPromise()
+            .then((mapResponse) => {                
+                response.json(mapResponse.json);
+            }).catch(error => response.send(error));
+        }else {
+            response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETROUTE_1001);
+        }
+    }
+
+    /**
      * find closest location to a latitude and longitude with an input address
      * @param request {Request} service request object
      * @param response {Response} service response object
@@ -214,6 +238,8 @@ export class LocationServices {
             .then((mapResponse) => {
                 response.json(mapResponse.json.predictions);
             }).catch(error => response.send(error));
+        }else {
+            response.send(ErrorMessages.ERROR_LOCATION_SERVICE_ADDRESS_1003);
         }
     }
 
@@ -233,6 +259,8 @@ export class LocationServices {
             .then((mapResponse) => {
                 response.json(mapResponse.json.results);
             }).catch(error => response.send(error));
+        }else {
+            response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETADDRESS_1002);
         }
     }
 
