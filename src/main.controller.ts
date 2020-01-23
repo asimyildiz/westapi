@@ -3,6 +3,7 @@ import { ApplicationServices } from './services/application.service';
 import { LocationServices } from './services/location.service';
 import { VehicleServices } from './services/vehicle.service';
 import { ReservationServices } from './services/reservation.service';
+import { AuthHelper } from './utils/auth.helper';
 
 /**
  * @class Controller
@@ -114,19 +115,19 @@ export class Controller {
      * @private
      */
     private _addLocationServiceRoutes() {
-        this._application.route('/addCity').post(this._locationServices.addCity);
-        this._application.route('/getAllCities').get(this._locationServices.getAllCities);
+        this._application.route('/addCity').post(AuthHelper.authenticate, this._locationServices.addCity);
+        this._application.route('/getAllCities').get(AuthHelper.authenticate, this._locationServices.getAllCities);
 
-        this._application.route('/addCounty/:id').post(this._locationServices.addCounty);
-        this._application.route('/getAllCounties').get(this._locationServices.getAllCounties);
+        this._application.route('/addCounty/:id').post(AuthHelper.authenticate, this._locationServices.addCounty);
+        this._application.route('/getAllCounties').get(AuthHelper.authenticate, this._locationServices.getAllCounties);
 
-        this._application.route('/addLocation/:id').post(this._locationServices.addLocation);
-        this._application.route('/getAllLocations').get(this._locationServices.getAllLocations);
+        this._application.route('/addLocation/:id').post(AuthHelper.authenticate, this._locationServices.addLocation);
+        this._application.route('/getAllLocations').get(AuthHelper.authenticate, this._locationServices.getAllLocations);
 
-        this._application.route('/getDirection').post(this._locationServices.getDirection.bind(this._locationServices));
-        this._application.route('/getClosestPlaces').post(this._locationServices.getClosestPlaces.bind(this._locationServices));
-        this._application.route('/getLocationAddress').post(this._locationServices.getLocationAddress.bind(this._locationServices));
-        this._application.route('/getRoute').post(this._locationServices.getRoute.bind(this._locationServices));
+        this._application.route('/getDirection').post(AuthHelper.authenticate, this._locationServices.getDirection.bind(this._locationServices));
+        this._application.route('/getClosestPlaces').post(AuthHelper.authenticate, this._locationServices.getClosestPlaces.bind(this._locationServices));
+        this._application.route('/getLocationAddress').post(AuthHelper.authenticate, this._locationServices.getLocationAddress.bind(this._locationServices));
+        this._application.route('/getRoute').post(AuthHelper.authenticate, this._locationServices.getRoute.bind(this._locationServices));
     }
 
     /**
@@ -134,18 +135,18 @@ export class Controller {
      * @private
      */
     private _addVehicleServiceRoutes() {
-        this._application.route('/addVehicle').post(this._vehicleServices.addVehicle.bind(this._vehicleServices));
-        this._application.route('/addVehiclePrice/:id').post(this._vehicleServices.addVehiclePrice);
-        this._application.route('/addVehiclePricesDiscount/:id').post(this._vehicleServices.addVehiclePricesDiscount);
-        this._application.route('/getAllVehicles').get(this._vehicleServices.getAllVehicles);
-        this._application.route('/getAllVehiclePrices').get(this._vehicleServices.getAllVehiclePrices);
-        this._application.route('/getAllVehiclePricesDiscounts').get(this._vehicleServices.getAllVehiclePricesDiscounts);
+        this._application.route('/addVehicle').post(AuthHelper.authenticate, this._vehicleServices.addVehicle.bind(this._vehicleServices));
+        this._application.route('/addVehiclePrice/:id').post(AuthHelper.authenticate, this._vehicleServices.addVehiclePrice);
+        this._application.route('/addVehiclePricesDiscount/:id').post(AuthHelper.authenticate, this._vehicleServices.addVehiclePricesDiscount);
+        this._application.route('/getAllVehicles').get(AuthHelper.authenticate, this._vehicleServices.getAllVehicles);
+        this._application.route('/getAllVehiclePrices').get(AuthHelper.authenticate, this._vehicleServices.getAllVehiclePrices);
+        this._application.route('/getAllVehiclePricesDiscounts').get(AuthHelper.authenticate, this._vehicleServices.getAllVehiclePricesDiscounts);
 
-        this._application.route('/addService').post(this._vehicleServices.addService.bind(this._vehicleServices));
-        this._application.route('/getAllServices').get(this._vehicleServices.getAllServices);
+        this._application.route('/addService').post(AuthHelper.authenticate, this._vehicleServices.addService.bind(this._vehicleServices));
+        this._application.route('/getAllServices').get(AuthHelper.authenticate, this._vehicleServices.getAllServices);
 
-        this._application.route('/addServiceForVehicle/:vehicleId/:serviceId').post(this._vehicleServices.addServiceForVehicle.bind(this._vehicleServices));
-        this._application.route('/getAllServicesForAllVehicles').get(this._vehicleServices.getAllServicesForAllVehicles);
+        this._application.route('/addServiceForVehicle/:vehicleId/:serviceId').post(AuthHelper.authenticate, this._vehicleServices.addServiceForVehicle.bind(this._vehicleServices));
+        this._application.route('/getAllServicesForAllVehicles').get(AuthHelper.authenticate, this._vehicleServices.getAllServicesForAllVehicles);
     }
 
     /**
@@ -153,6 +154,6 @@ export class Controller {
      * @private
      */
     private _addReservationServiceRoutes() {
-        this._application.route('/addReservation').post(this._reservationServices.addReservation);
+        this._application.route('/addReservation').post(AuthHelper.authenticate, this._reservationServices.addReservation);
     }
 }

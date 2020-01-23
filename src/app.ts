@@ -1,6 +1,7 @@
 import express, { Application } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import helmet from 'helmet';
 import mongoose from 'mongoose';
 import GoogleMapAPI from '@google/maps';
 import multer from 'multer';
@@ -72,6 +73,7 @@ class App {
         }));
 
         this.application.use(cors());
+        this.application.use(helmet());
     }
 
     /**

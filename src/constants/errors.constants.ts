@@ -16,6 +16,12 @@ interface ErrorMessage {
 }
 
 /**
+ * api no auth
+ * @type {ErrorMessage}
+ */
+export const ERROR_NO_AUTH: ErrorMessage = { code: '9999', message: 'Please get a token before using services' };
+
+/**
  * location error message
  * @type {ErrorMessage}
  */

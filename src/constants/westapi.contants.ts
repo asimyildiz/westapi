@@ -17,6 +17,24 @@ export const DATABASE_CONNECTION = 'mongodb://localhost:27017/WestApi';
 export const GOOGLEMAP_API_KEY = 'AIzaSyCdzYtHIF_8y5wvAe9ad30VuaYB0USZdhY';
 
 /**
+ * api key for client devices
+ * @type {string}
+ */
+export const APPLICATION_API_KEY = 'bc304ad0503a6360f8124d23c033487f';
+
+/**
+ * application ids
+ * @type {Array<string>}
+ */
+export const APPLICATION_IDS = ['westmobile'];
+
+/**
+ * secret key for JWT
+ * @type {string}
+ */
+export const SECRET_KEY = 'hDkRjLmJ15PxbP6a';
+
+/**
  * allowed file types to be uploaded to server
  * @type {RegExp}
  */

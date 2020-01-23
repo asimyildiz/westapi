@@ -729,6 +729,26 @@
 				},
 				{
 					"name": "http://localhost:9001/init",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "43524161-a5aa-40a8-a85e-3fdd8d71ff51",
+								"exec": [
+									"const moment = require('moment');\r",
+									"const currentDate = moment().format(\"YYYY-MM-DD h:mm\");\r",
+									"console.log(currentDate);\r",
+									"const hash = CryptoJS.MD5('westmobilebc304ad0503a6360f8124d23c033487f' + currentDate).toString(CryptoJS.enc.Hex); \r",
+									"pm.environment.set('hash', hash);\r",
+									"\r",
+									"const uuid = require('uuid');\r",
+									"const generatedUId = uuid.v4();\r",
+									"pm.environment.set('uuid', generatedUId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -740,7 +760,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"language\": \"tr\",\n\t\"country\": \"tr\"\n}"
+							"raw": "{\n\t\"language\": \"tr\",\n\t\"country\": \"tr\",\n\t\"apiKey\": \"{{hash}}\",\n\t\"uuid\": \"{{uuid}}\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9001/init",
@@ -759,6 +779,38 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlLZXkiOiI4YjEyM2I1OTE4ZWM2MDM0ZGE3YjRkNzZkMjdkZjVhMiIsInV1aWQiOiJkMjQ3OGM2ZC1hZjYxLTQ5Y2UtOGMyNS04YzRkMjk5ZjVjOTYiLCJpYXQiOjE1Nzk3NzU4NjJ9.hMnP-ZOME7koeHxCRVP6pdv8t01Cu2HbXfV3IjBLinI",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c8e230b0-8a2a-448a-8d9d-09a448cde334",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "7a1ce57a-3f1a-4505-9eb1-469d8c491da1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"protocolProfileBehavior": {}

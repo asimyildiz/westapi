@@ -1,8 +1,13 @@
 import { Request, Response, Application } from 'express';
+import { AuthHelper } from '../utils/auth.helper';
+import { Device } from '../models/device.model';
 import { 
     APPLICATION_LANGUAGES,
-    APPLICATION_COUNTRIES,
+    APPLICATION_COUNTRIES
 } from '../constants/westapi.contants';
+import {
+    ERROR_NO_AUTH
+} from '../constants/errors.constants';
 
 /**
  * @class ApplicationServices
@@ -20,10 +25,25 @@ export class ApplicationServices {
      * @param request {Request} service request object
      * @param response {Response} service response object
      */
-    public init(request: Request, response: Response) {
-        this._setApplicationLanguage(request.body.language);
-        this._setApplicationCountry(request.body.country);
-        response.json();
+    public init(request: Request, response: Response) { 
+        const token = AuthHelper.register(request.body.apiKey, request.body.uuid);
+        if (token) {
+            this._registerDevice(request.body.uid);
+            this._setApplicationLanguage(request.body.language);
+            this._setApplicationCountry(request.body.country);
+            response.json(token);
+        }else {
+            response.send(ERROR_NO_AUTH);
+        }
+    }
+
+    /**
+     * register device into database if not exists
+     * and update lastAccessDate
+     * @param uuid {string}
+     */
+    private _registerDevice(uuid: string) {
+        Device.findOneAndUpdate({ uuid: uuid }, { $set : { 'lastAccessDate' : Date.now() } }, { upsert: true }).exec();
     }
 
     /**
