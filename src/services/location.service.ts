@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import { GoogleMapsClientWithPromise } from '@google/maps';
 import { MongooseDocument, Mongoose } from 'mongoose';
-import { City } from '../models/city.model';
-import { County } from '../models/county.model';
 import { Location, getLocation } from '../models/location.model';
 import * as ErrorMessages from '../constants/errors.constants';
 import { TokenHelper } from '../utils/token.helper';
@@ -34,94 +32,6 @@ export class LocationServices {
     }
 
     /**
-     * add a new city into database
-     * @param request {Request} service request object
-     * @param response {Response} service response object
-     */
-    public addCity(request: Request, response: Response) {
-        const newCity = new City(request.body);
-        newCity.save((error: Error, document: MongooseDocument) => {
-            if (error) {
-                response.send(error);
-                return;
-            }
-            response.json(document);
-        });
-    }
-
-    /**
-     * list all cities from database
-     * @param request {Request} service request object
-     * @param response {Response} service response object
-     */
-    public getAllCities(request: Request, response: Response) {
-        City.find({})
-            .populate({
-                path: 'counties',
-                populate: {
-                    path: 'locations',
-                    model: 'Location'
-                }
-            })
-            .exec((error: Error, document: MongooseDocument) => {
-                if (error) {
-                    response.send(error);
-                    return;
-                }
-                response.json(document);
-            });
-    }
-
-    /**
-     * add a new county into database
-     * @param request {Request} service request object
-     * @param response {Response} service response object
-     */
-    public addCounty(request: Request, response: Response) {
-        const newCounty = new County(request.body);
-        newCounty.save((error: Error, document: MongooseDocument) => {
-            if (error) {
-                response.send(error);
-                return;
-            }
-
-            City.findOneAndUpdate({ _id: request.params.id }, { $push: { counties: document._id }}, { new: true })
-                .populate({
-                    path: 'counties',
-                    populate: {
-                        path: 'locations',
-                        model: 'Location'
-                    }
-                })
-                .exec((errorCity: Error, documentCity: any) => {
-                    if (errorCity) {
-                        response.send(errorCity);
-                        return;
-                    }
-
-                    response.json(documentCity);    
-                });
-        });
-    }
-
-    /**
-     * list all counties from database
-     * @param request {Request} service request object
-     * @param response {Response} service response object
-     */
-    public getAllCounties(request: Request, response: Response) {
-        County.find({})
-            .populate('locations')
-            .exec((error: Error, document: MongooseDocument) => {
-                if (error) {
-                    response.send(error);
-                    return;
-                }
-                response.json(document);
-            });
-    }
-
-    /**
      * add a new location into database
      * @param request {Request} service request object
      * @param response {Response} service response object
@@ -133,17 +43,7 @@ export class LocationServices {
                 response.send(error);
                 return;
             }
-
-            County.findOneAndUpdate({ _id: request.params.id }, { $push: { locations: document._id }}, { new: true })
-                .populate('locations')
-                .exec((errorCounty: Error, documentCounty: any) => {
-                    if (errorCounty) {
-                        response.send(errorCounty);
-                        return;
-                    }
-
-                    response.json(documentCounty);    
-                });
+            response.json(document);
         });
     }
 

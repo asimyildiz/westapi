@@ -27,6 +27,7 @@ const InvoiceSchema = new mongoose.Schema({
         ref: 'Reservation'
     }]
 }, {
+    collection: 'Invoice',
     timestamps: true,
     toJSON: {
         virtuals: true

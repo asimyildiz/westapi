@@ -34,6 +34,7 @@ const ServiceSchema = new mongoose.Schema({
         ref: 'VehicleService'
     }]
 }, {
+    collection: 'Service',
     timestamps: true,
     toJSON: {
         virtuals: true

@@ -20,15 +20,16 @@ const LocationSchema = new mongoose.Schema({
     longitude: {
         type: String
     },
-    county: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'County'
+    priority: {
+        type: Number,
+        default: 0
     },
     reservations: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Reservation'
     }]
 }, {
+    collection: 'Location',
     timestamps: true,
     toJSON: {
         virtuals: true

@@ -115,13 +115,7 @@ export class Controller {
      * @private
      */
     private _addLocationServiceRoutes() {
-        this._application.route('/addCity').post(AuthHelper.authenticate, this._locationServices.addCity);
-        this._application.route('/getAllCities').get(AuthHelper.authenticate, this._locationServices.getAllCities);
-
-        this._application.route('/addCounty/:id').post(AuthHelper.authenticate, this._locationServices.addCounty);
-        this._application.route('/getAllCounties').get(AuthHelper.authenticate, this._locationServices.getAllCounties);
-
-        this._application.route('/addLocation/:id').post(AuthHelper.authenticate, this._locationServices.addLocation);
+        this._application.route('/addLocation').post(AuthHelper.authenticate, this._locationServices.addLocation);
         this._application.route('/getAllLocations').get(AuthHelper.authenticate, this._locationServices.getAllLocations);
 
         this._application.route('/getDirection').post(AuthHelper.authenticate, this._locationServices.getDirection.bind(this._locationServices));

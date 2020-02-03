@@ -8,7 +8,7 @@ export const PORT = 9001;
  * database connection string
  * @type {string}
  */
-export const DATABASE_CONNECTION = 'mongodb://localhost:27017/WestApi';
+export const DATABASE_CONNECTION = 'mongodb://127.0.0.1:27017/WestApi';
 
 /**
  * google map api key

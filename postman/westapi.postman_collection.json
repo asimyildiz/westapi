@@ -10,109 +10,7 @@
 			"name": "location",
 			"item": [
 				{
-					"name": "addcity",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"İstanbul\"\r\n}"
-						},
-						"url": {
-							"raw": "http://localhost:9001/addCity",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"addCity"
-							]
-						},
-						"description": "add city to westapi"
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:9001/getAllCities",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:9001/getAllCities",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"getAllCities"
-							]
-						},
-						"description": "getAllCities"
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:9001/addCounty/5e19ead26ec2d894a5c45738",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Beşiktaş\"\r\n}"
-						},
-						"url": {
-							"raw": "http://localhost:9001/addCounty/5e1f347ebccc07a5a59830dd",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"addCounty",
-								"5e1f347ebccc07a5a59830dd"
-							]
-						},
-						"description": "addCounty example"
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:9001/getAllCounties",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:9001/getAllCounties",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"getAllCounties"
-							]
-						},
-						"description": "getAllCounties"
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:9001/addLocation/5e19fa4fe6fcc2e770f54d6e",
+					"name": "http://localhost:9001/addLocation",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -127,15 +25,14 @@
 							"raw": "{\r\n    \"name\": \"Ayazağa Meydan Park İçi Yolu\",\r\n    \"detail\": \"Ayazağa\",\r\n    \"latitude\": \"41.115666\",\r\n    \"longitude\": \"28.998620\",\r\n    \"type\": \"Other\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/addLocation/5e1f348fbccc07a5a59830df",
+							"raw": "http://localhost:9001/addLocation",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "9001",
 							"path": [
-								"addLocation",
-								"5e1f348fbccc07a5a59830df"
+								"addLocation"
 							]
 						},
 						"description": "addLocation Sarıyer - Ayazağa - Ayazağa Meydan Park"
@@ -163,7 +60,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:9001/addLocation/5e1a4170bc23d00399f38141",
+					"name": "http://localhost:9001/addLocation",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -178,15 +75,14 @@
 							"raw": "{\r\n    \"name\": \"Digitürk Genel Müdürlüğü\",\r\n    \"detail\": \"Cihannüma\",\r\n    \"latitude\": \"41.049881\",\r\n    \"longitude\": \"29.006920\",\r\n    \"type\": \"Other\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/addLocation/5e1f3489bccc07a5a59830de",
+							"raw": "http://localhost:9001/addLocation",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "9001",
 							"path": [
-								"addLocation",
-								"5e1f3489bccc07a5a59830de"
+								"addLocation"
 							]
 						},
 						"description": "addLocation - Cihannüma - Digitürk Genel Müdürlüğü"
@@ -220,37 +116,6 @@
 							]
 						},
 						"description": "getDirection using googleMapApi"
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:9001/addCounty/5e1f243a0c5e0683a9c5facc",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Sarıyer\"\r\n}"
-						},
-						"url": {
-							"raw": "http://localhost:9001/addCounty/5e1f347ebccc07a5a59830dd",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"addCounty",
-								"5e1f347ebccc07a5a59830dd"
-							]
-						},
-						"description": "addCounty for Sarıyer"
 					},
 					"response": []
 				},

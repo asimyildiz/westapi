@@ -35,6 +35,7 @@ const VehiclePricesSchema = new mongoose.Schema({
         ref: 'Reservation'
     }]
 }, {
+    collection: 'VehiclePrices',
     timestamps: true,
     toJSON: {
         virtuals: true

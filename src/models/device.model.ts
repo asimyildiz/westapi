@@ -11,6 +11,7 @@ const DeviceSchema = new mongoose.Schema({
         default: Date.now
     }
 }, {
+    collection: 'Device',
     timestamps: true,
     toJSON: {
         virtuals: true

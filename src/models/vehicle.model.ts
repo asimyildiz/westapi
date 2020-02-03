@@ -33,6 +33,7 @@ const VehicleSchema = new mongoose.Schema({
         ref: 'Reservation'
     }]
 }, {
+    collection: 'Vehicle',
     timestamps: true,
     toJSON: {
         virtuals: true

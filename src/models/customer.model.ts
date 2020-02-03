@@ -26,6 +26,7 @@ const CustomerSchema = new mongoose.Schema({
         ref: 'ReservationCustomer'
     }]
 }, {
+    collection: 'Customer',
     timestamps: true,
     toJSON: {
         virtuals: true
