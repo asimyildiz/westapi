@@ -2,7 +2,7 @@
  * service port number
  * @type {Number}
  */
-export const PORT = 9001;
+export const PORT = 8080;
 
 /**
  * database connection string

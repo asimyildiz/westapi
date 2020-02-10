@@ -121,6 +121,7 @@ export class Controller {
         this._application.route('/getDirection').post(AuthHelper.authenticate, this._locationServices.getDirection.bind(this._locationServices));
         this._application.route('/getClosestPlaces').post(AuthHelper.authenticate, this._locationServices.getClosestPlaces.bind(this._locationServices));
         this._application.route('/getLocationAddress').post(AuthHelper.authenticate, this._locationServices.getLocationAddress.bind(this._locationServices));
+        this._application.route('/getLocationDetail').post(AuthHelper.authenticate, this._locationServices.getLocationDetail.bind(this._locationServices));
         this._application.route('/getRoute').post(AuthHelper.authenticate, this._locationServices.getRoute.bind(this._locationServices));
     }
 
