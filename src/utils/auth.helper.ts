@@ -57,7 +57,7 @@ export class AuthHelper {
      * @returns {string} 
      */
     static findApiKey(apiKey: string, currentDate: Date) {
-        return APPLICATION_IDS.find(AuthHelper.checkApiKey.bind(null, apiKey, dateFormat(currentDate, "yyyy-mm-dd h:MM")));
+        return APPLICATION_IDS.find(AuthHelper.checkApiKey.bind(null, apiKey, dateFormat(currentDate, "UTC:yyyy-mm-dd h:MM")));
     }
 
     /**
