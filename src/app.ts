@@ -73,7 +73,7 @@ class App {
             extended: true
         }));
 
-        this.application.use(express.static(`${__dirname}/${UPLOAD_FOLDER}`));
+        this.application.use(express.static(path.join(__dirname, '../', UPLOAD_FOLDER)));
         this.application.use(cors());
         this.application.use(helmet());
     }
