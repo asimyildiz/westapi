@@ -41,16 +41,22 @@ export const SECRET_KEY = 'hDkRjLmJ15PxbP6a';
 export const ALLOWED_FILE_TYPES = /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/;
 
 /**
+ * upload folder name
+ * @type {string}
+ */
+export const UPLOAD_FOLDER = 'uploads';
+
+/**
  * folder name to upload images
  * @type {string}
  */
-export const UPLOAD_FOLDER_NAME = './uploads/';
+export const UPLOAD_FOLDER_NAME = `./${UPLOAD_FOLDER}/`;
 
 /**
  * folder name to upload icons
  * @type {string}
  */
-export const UPLOAD_ICON_FOLDER_NAME = './uploads/icons/'
+export const UPLOAD_ICON_FOLDER_NAME = `./${UPLOAD_FOLDER}/icons/`;
 
 /**
  * received json data limit

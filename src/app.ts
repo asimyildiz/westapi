@@ -17,7 +17,8 @@ import {
     UPLOAD_FOLDER_NAME,
     UPLOAD_ICON_FOLDER_NAME,
     DEFAULT_APPLICATION_LANGUAGE,
-    DEFAULT_APPLICATION_COUNTRY
+    DEFAULT_APPLICATION_COUNTRY,
+    UPLOAD_FOLDER
 } from './constants/westapi.contants';
 
 /**
@@ -72,6 +73,7 @@ class App {
             extended: true
         }));
 
+        this.application.use(express.static(`${__dirname}/${UPLOAD_FOLDER}`));
         this.application.use(cors());
         this.application.use(helmet());
     }
