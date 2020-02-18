@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const CustomerSchema = new mongoose.Schema({
     title: {
         type: String,
-        enum: ['Mr', 'Mrs']
+        default: 'Mr'
     },
     name: {
         type: String

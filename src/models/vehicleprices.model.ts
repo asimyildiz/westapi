@@ -19,8 +19,7 @@ const VehiclePricesSchema = new mongoose.Schema({
     },
     currency: {
         type: String,
-        default: 'TRY',
-        enum: ['TRY', 'USD', 'EUR']
+        default: 'TRY'
     },
     isActive: {
         type: Boolean,
