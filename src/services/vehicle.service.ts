@@ -103,7 +103,7 @@ export class VehicleServices {
     private _saveVehicleToDatabase(fileUploadRequest: FileUploadRequest, response: Response) {
         const imageList =  fileUploadRequest.files as Array<Express.Multer.File>;
         const uploadResponse = imageList.map((image) => {
-            return `${UPLOAD_FOLDER_NAME}${image.filename}`;
+            return image.filename;
         });
         
         fileUploadRequest.body.images = uploadResponse;
