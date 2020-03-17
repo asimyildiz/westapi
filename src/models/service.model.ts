@@ -28,11 +28,7 @@ const ServiceSchema = new mongoose.Schema({
     maxLimit: {
         type: Number,
         default: 1
-    },
-    vehicleServices: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'VehicleService'
-    }]
+    }
 }, {
     collection: 'Service',
     timestamps: true,

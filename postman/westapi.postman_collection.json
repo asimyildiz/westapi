@@ -10,117 +10,63 @@
 			"name": "location",
 			"item": [
 				{
-					"name": "http://localhost:9001/addLocation",
+					"name": "getLocationAddress",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Ayazağa Meydan Park İçi Yolu\",\r\n    \"detail\": \"Ayazağa\",\r\n    \"latitude\": \"41.115666\",\r\n    \"longitude\": \"28.998620\",\r\n    \"type\": \"Other\"\r\n}"
+							"raw": "{\n\t\"latitude\": \"41.049881\",\n\t\"longitude\": \"29.006920\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/addLocation",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/getLocationAddress",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
-								"addLocation"
+								"getLocationAddress"
 							]
 						},
-						"description": "addLocation Sarıyer - Ayazağa - Ayazağa Meydan Park"
+						"description": "getLocationAddress from latitude and longitude"
 					},
 					"response": []
 				},
 				{
-					"name": "http://localhost:9001/getAllLocations",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:9001/getAllLocations",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"getAllLocations"
-							]
-						},
-						"description": "getAllLocations"
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:9001/addLocation",
+					"name": "getClosestPlaces-with-latlon",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Digitürk Genel Müdürlüğü\",\r\n    \"detail\": \"Cihannüma\",\r\n    \"latitude\": \"41.049881\",\r\n    \"longitude\": \"29.006920\",\r\n    \"type\": \"Other\"\r\n}"
+							"raw": "{\n\t\"input\": \"Ba\",\n\t\"latitude\": \"41.0082\",\n\t\"longitude\": \"28.9784\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/addLocation",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/getClosestPlaces",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
-								"addLocation"
+								"getClosestPlaces"
 							]
 						},
-						"description": "addLocation - Cihannüma - Digitürk Genel Müdürlüğü"
+						"description": "getClosestPlaces using lat and long"
 					},
 					"response": []
 				},
 				{
-					"name": "http://localhost:9001/getDirection",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"data\": [\r\n    \t{\r\n\t    \t\"name\": \"Digitürk Genel Müdürlüğü\",\r\n\t\t    \"detail\": \"Cihannüma\",\r\n\t\t    \"latitude\": \"41.049881\",\r\n\t\t    \"longitude\": \"29.006920\",\r\n\t\t    \"type\": \"Other\"\r\n\t    },\r\n\t    {\r\n\t    \t\"name\": \"Ayazağa Meydan Park İçi Yolu\",\r\n\t\t    \"detail\": \"Ayazağa\",\r\n\t\t    \"latitude\": \"41.115666\",\r\n\t\t    \"longitude\": \"28.998620\",\r\n\t\t    \"type\": \"Other\"\r\n\t    }\r\n\t]\r\n}"
-						},
-						"url": {
-							"raw": "http://localhost:9001/getDirection",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"getDirection"
-							]
-						},
-						"description": "getDirection using googleMapApi"
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:9001/getClosestPlaces",
+					"name": "getClosestPlaces-with-input",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -135,14 +81,39 @@
 							"raw": "{\n\t\"input\": \"Başa\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/getClosestPlaces",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/getClosestPlaces",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
 								"getClosestPlaces"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getLocationDetail",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"placeId\": \"ChIJ50d9GoOvyhQReB9ocT-neJ8\"\n}"
+						},
+						"url": {
+							"raw": "{{serviceUrl}}/getLocationDetail",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"getLocationDetail"
 							]
 						},
 						"description": "getClosestPlaces to lat long"
@@ -150,74 +121,14 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:9001/getLocationAddress",
+					"name": "getRoute",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"latitude\": \"41.049881\",\n\t\"longitude\": \"29.006920\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:9001/getLocationAddress",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"getLocationAddress"
-							]
-						},
-						"description": "getLocationAddress from latitude and longitude"
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:9001/getClosestPlaces",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"input\": \"Ba\",\n\t\"latitude\": \"41.0082\",\n\t\"longitude\": \"28.9784\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:9001/getClosestPlaces",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"getClosestPlaces"
-							]
-						},
-						"description": "getClosestPlaces using lat and long"
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:9001/getRoute",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -225,12 +136,10 @@
 							"raw": "{\n\t\"fromLatitude\": \"41.049881\",\n\t\"fromLongitude\": \"29.006920\",\n\t\"toLatitude\": \"41.115666\",\n\t\"toLongitude\": \"28.998620\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/getRoute",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/getRoute",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
 								"getRoute"
 							]
@@ -246,7 +155,7 @@
 			"name": "vehicle",
 			"item": [
 				{
-					"name": "http://localhost:9001/addVehicle",
+					"name": "addVehicle",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -281,12 +190,10 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:9001/addVehicle",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/addVehicle",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
 								"addVehicle"
 							]
@@ -296,7 +203,25 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:9001/addVehiclePrice/5e1f26814e62ea91f062e174",
+					"name": "getAllVehicles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceUrl}}/getAllVehicles",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"getAllVehicles"
+							]
+						},
+						"description": "getAllVehicles method"
+					},
+					"response": []
+				},
+				{
+					"name": "addVehiclePrice/:vehicleId",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -311,15 +236,13 @@
 							"raw": "{\n\t\"minPrice\": 140,\n\t\"price\": 4,\n\t\"minDistance\": 100,\n\t\"currency\": \"TRY\",\n\t\"isActive\": true\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/addVehiclePrice/5e1f34bcbccc07a5a59830e2",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/addVehiclePrice/5e7158db180cc9947a47ddfc",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
 								"addVehiclePrice",
-								"5e1f34bcbccc07a5a59830e2"
+								"5e7158db180cc9947a47ddfc"
 							]
 						},
 						"description": "addVehiclePrice request"
@@ -327,27 +250,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:9001/getAllVehiclePrices",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:9001/getAllVehiclePrices",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"getAllVehiclePrices"
-							]
-						},
-						"description": "getAllVehiclePrices"
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:9001/addVehiclePricesDiscount/5e1f34c6bccc07a5a59830e3",
+					"name": "addVehiclePricesDiscount/:vehiclePrice",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -370,8 +273,8 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -379,15 +282,13 @@
 							"raw": "{\n\t\"discount\": 10,\n\t\"minPriceToApply\": 100,\n\t\"startDate\": \"{{startDate}}\",\n\t\"endDate\": \"{{endDate}}\",\n\t\"name\": \"Kış İndirimi\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/addVehiclePricesDiscount/5e1f34c6bccc07a5a59830e3",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/addVehiclePricesDiscount/5e7158eb180cc9947a47ddfd",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
 								"addVehiclePricesDiscount",
-								"5e1f34c6bccc07a5a59830e3"
+								"5e7158eb180cc9947a47ddfd"
 							]
 						},
 						"description": "addVehiclePricesDiscount method"
@@ -395,17 +296,33 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:9001/getAllVehiclePricesDiscounts",
+					"name": "getAllVehiclePrices",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9001/getAllVehiclePricesDiscounts",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/getAllVehiclePrices",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
+							"path": [
+								"getAllVehiclePrices"
+							]
+						},
+						"description": "getAllVehiclePrices"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllVehiclePricesDiscounts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceUrl}}/getAllVehiclePricesDiscounts",
+							"host": [
+								"{{serviceUrl}}"
+							],
 							"path": [
 								"getAllVehiclePricesDiscounts"
 							]
@@ -415,7 +332,45 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:9001/addService",
+					"name": "addService-MusteriHizmetleri",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "7 / 24 Müşteri Hizmetleri",
+									"type": "text"
+								},
+								{
+									"key": "icon",
+									"type": "file",
+									"src": "/D:/Development/Node/westapi/postman/musteri-hizmetleri.png"
+								},
+								{
+									"key": "isPaid",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{serviceUrl}}/addService",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"addService"
+							]
+						},
+						"description": "addService"
+					},
+					"response": []
+				},
+				{
+					"name": "addService-Ucretsizİptal",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -440,12 +395,10 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:9001/addService",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/addService",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
 								"addService"
 							]
@@ -455,17 +408,53 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:9001/getAllServices",
+					"name": "addService-KonforluArac",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Size Özel Konforlu Araç",
+									"type": "text"
+								},
+								{
+									"key": "icon",
+									"type": "file",
+									"src": "/D:/Development/Node/westapi/postman/size-ozel-konforlu-arac.png"
+								},
+								{
+									"key": "isPaid",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{serviceUrl}}/addService",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"addService"
+							]
+						},
+						"description": "addService"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllServices",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9001/getAllServices",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/getAllServices",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
 								"getAllServices"
 							]
@@ -475,47 +464,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:9001/getAllServicesForAllVehicles",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:9001/getAllServicesForAllVehicles",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"getAllServicesForAllVehicles"
-							]
-						},
-						"description": "getAllServicesForAllVehicles method"
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:9001/getAllVehicles",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:9001/getAllVehicles",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"getAllVehicles"
-							]
-						},
-						"description": "getAllVehicles method"
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:9001/addServiceForVehicle/5e1f34bcbccc07a5a59830e2/5e1f41aec96f467305495fe2",
+					"name": "addServiceForVehicle/:vehicleId/:serviceId",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -530,16 +479,14 @@
 							"raw": "{}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/addServiceForVehicle/5e1f34bcbccc07a5a59830e2/5e1f41aec96f467305495fe2",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/addServiceForVehicle/5e7158db180cc9947a47ddfc/5e715902180cc9947a47de00",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
 								"addServiceForVehicle",
-								"5e1f34bcbccc07a5a59830e2",
-								"5e1f41aec96f467305495fe2"
+								"5e7158db180cc9947a47ddfc",
+								"5e715902180cc9947a47de00"
 							]
 						},
 						"description": "addServiceForVehicle method"
@@ -553,17 +500,15 @@
 			"name": "application",
 			"item": [
 				{
-					"name": "http://localhost:9001/getApplicationLanguages",
+					"name": "getApplicationLanguages",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9001/getApplicationLanguages",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/getApplicationLanguages",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
 								"getApplicationLanguages"
 							]
@@ -573,17 +518,15 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:9001/getApplicationCountries",
+					"name": "getApplicationCountries",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9001/getApplicationCountries",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/getApplicationCountries",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
 								"getApplicationCountries"
 							]
@@ -593,15 +536,15 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:9001/init",
+					"name": "init",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "43524161-a5aa-40a8-a85e-3fdd8d71ff51",
+								"id": "8a72eaec-c08c-450a-ac23-df63413d56e1",
 								"exec": [
 									"const moment = require('moment');\r",
-									"const currentDate = moment().format(\"YYYY-MM-DD h:mm\");\r",
+									"const currentDate = moment.utc().format(\"YYYY-MM-DD h:mm\");\r",
 									"console.log(currentDate);\r",
 									"const hash = CryptoJS.MD5('westmobilebc304ad0503a6360f8124d23c033487f' + currentDate).toString(CryptoJS.enc.Hex); \r",
 									"pm.environment.set('hash', hash);\r",
@@ -628,17 +571,295 @@
 							"raw": "{\n\t\"language\": \"tr\",\n\t\"country\": \"tr\",\n\t\"apiKey\": \"{{hash}}\",\n\t\"uuid\": \"{{uuid}}\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/init",
-							"protocol": "http",
+							"raw": "{{serviceUrl}}/init",
 							"host": [
-								"localhost"
+								"{{serviceUrl}}"
 							],
-							"port": "9001",
 							"path": [
 								"init"
 							]
 						},
 						"description": "init application"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "addUser-info",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8a72eaec-c08c-450a-ac23-df63413d56e1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"asim\",\n\t\"email\": \"info@asimyildiz.com\",\n\t\"password\": \"123412\",\n\t\"phone\": \"5363670123\",\n\t\"passport\": \"11111111111\"\n}"
+						},
+						"url": {
+							"raw": "{{serviceUrl}}/addUser",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"addUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addUser-asim",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8a72eaec-c08c-450a-ac23-df63413d56e1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"asim\",\n\t\"email\": \"asim@asimyildiz.com\",\n\t\"password\": \"123412\",\n\t\"phone\": \"5363670123\",\n\t\"passport\": \"11111111111\"\n}"
+						},
+						"url": {
+							"raw": "{{serviceUrl}}/addUser",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"addUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8c906ea5-bca6-4dba-ba37-a45decc335aa",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{serviceUrl}}/getAllUsers",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"getAllUsers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8c906ea5-bca6-4dba-ba37-a45decc335aa",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"info@asimyildiz.com\",\n\t\"password\": \"123412\"\n}"
+						},
+						"url": {
+							"raw": "{{serviceUrl}}/login",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "reservation",
+			"item": [
+				{
+					"name": "addCustomer-info",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\": \"5e71559f36536caa6004b025\",\n\t\"name\": \"Müşteri 1\",\n\t\"passport\": \"12345678901\"\n}"
+						},
+						"url": {
+							"raw": "{{serviceUrl}}/addCustomer",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"addCustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addCustomer-asim",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\": \"5e7155a436536caa6004b026\",\n\t\"name\": \"Müşteri 1\",\n\t\"passport\": \"12345678901\"\n}"
+						},
+						"url": {
+							"raw": "{{serviceUrl}}/addCustomer",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"addCustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCustomersOfUser/:userId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{serviceUrl}}/getCustomersOfUser/5e71559f36536caa6004b025",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"getCustomersOfUser",
+								"5e71559f36536caa6004b025"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addReservation",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2e81634d-3e39-4d81-9511-2d2385e222ab",
+								"exec": [
+									"let startDate = new Date().toJSON();\r",
+									"pm.environment.set('startDate', startDate);\r",
+									"\r",
+									"let endDate = new Date();\r",
+									"endDate.setDate(endDate.getDate() + 5);\r",
+									"pm.environment.set('endDate', endDate);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"vehicle\": \"5e7158db180cc9947a47ddfc\",\n\t\"vehiclePrices\": \"5e7158eb180cc9947a47ddfd\",\n\t\"vehiclePricesDiscount\": \"5e7158f5180cc9947a47ddfe\",\n\t\"user\": \"5e71559f36536caa6004b025\",\n\t\"startLocation\": \"Başakşehir, Başak, Başakşehir/İstanbul, Türkiye\",\n\t\"endLocation\": \"Sarıgazi, Sancaktepe/İstanbul, Türkiye\",\n\t\"startLatLon\": \"41.083333,28.816667\",\n\t\"endLatLon\": \"41.0065548,29.2073771\",\n\t\"startDate\": \"{{startDate}}\",\n\t\"price\": 300,\n\t\"customers\": [\"5e7155bf36536caa6004b027\"]\n}"
+						},
+						"url": {
+							"raw": "{{serviceUrl}}/addReservation",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"addReservation"
+							]
+						}
 					},
 					"response": []
 				}
@@ -651,7 +872,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlLZXkiOiI4YjEyM2I1OTE4ZWM2MDM0ZGE3YjRkNzZkMjdkZjVhMiIsInV1aWQiOiJkMjQ3OGM2ZC1hZjYxLTQ5Y2UtOGMyNS04YzRkMjk5ZjVjOTYiLCJpYXQiOjE1Nzk3NzU4NjJ9.hMnP-ZOME7koeHxCRVP6pdv8t01Cu2HbXfV3IjBLinI",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlLZXkiOiI4ZTM0MDk5OTE1Njg4YWVmNWFlOWZhMmM5MjcyNTVmZSIsInV1aWQiOiI2NTk2MmJmNi05NDc1LTQ2OWUtYjc4MC0zYzcxMjU3NmFiMDAiLCJpYXQiOjE1ODQzNTkwMjV9.AAze8XCXU02-XAA3LO1HAYFz1Sa7DBgQkjOmAFDEpHQ",
 				"type": "string"
 			}
 		]

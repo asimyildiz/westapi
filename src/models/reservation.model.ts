@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const ReservationSchema = new mongoose.Schema({
-    invoice: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Invoice'
-    },
     vehicle: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vehicle'
@@ -13,21 +9,31 @@ const ReservationSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'VehiclePrices'
     },
-    startLocation: {
+    vehiclePricesDiscount: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Location'
+        ref: 'VehiclePricesDiscount'
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    startLocation: {
+        type: String,
+        required: 'Start location is required'
     },
     endLocation: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Location'
+        type: String,
+        required: 'End location is required'
+    },
+    startLatLon: {
+        type: String
+    },
+    endLatLon: {
+        type: String
     },
     startDate: {
         type: Date,
         required: 'Start date is required'
-    },
-    startTime: {
-        type: String,
-        required: 'Start time is required'
     },
     isRoundTrip: {
         type: Boolean,
@@ -36,20 +42,8 @@ const ReservationSchema = new mongoose.Schema({
     returnDate: {
         type: Date
     },
-    returnTime: {
-        type: String
-    },
-    isSameReturnLocation: {
-        type: Boolean,
-        default: true
-    },
-    returnStartLocation: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Location'
-    },
-    returnEndLocation: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Location'
+    price: {
+        type: Number
     },
     addressDetail: {
         type: String
@@ -57,20 +51,13 @@ const ReservationSchema = new mongoose.Schema({
     flightNumber: {
         type: String
     },
-    returnAddressDetail: {
-        type: String
-    },
     isCompleted: {
         type: Boolean,
         default: false
     },
-    isInvoiceSent: {
-        type: Boolean,
-        default: false
-    },
-    reservationCustomers: [{
+    customers: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ReservationCustomer'
+        ref: 'Customer'
     }]
 }, {
     collection: 'Reservation',

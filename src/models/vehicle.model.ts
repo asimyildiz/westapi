@@ -24,13 +24,9 @@ const VehicleSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'VehiclePrices'
     }],
-    vehicleServices: [{
+    services: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'VehicleService'
-    }],
-    reservations: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Reservation'
+        ref: 'Service'
     }]
 }, {
     collection: 'Vehicle',

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction, response } from 'express';
 import { Reservation } from '../models/reservation.model';
+import { Customer } from '../models/customer.model';
 import { MongooseDocument, Mongoose } from 'mongoose';
 
 /**
@@ -7,6 +8,43 @@ import { MongooseDocument, Mongoose } from 'mongoose';
  * @classdesc reservation service api methods
  */
 export class ReservationServices {
+    /**
+     * add a new customer into database
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public addCustomer(request: Request, response: Response) {
+        const newCustomer = new Customer(request.body);
+        newCustomer.save((error: Error, document: MongooseDocument) => {
+            if (error) {
+                response.send(error);
+                return;
+            }
+            
+            response.json(document);
+        });
+    }
+
+    /**
+     * get all customers of a user
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public getCustomersOfUser(request: Request, response: Response) {
+        const customerData = request.params;
+        if (customerData && customerData.userId) {
+            Customer.findOne({ user: customerData.userId })
+                .exec(function (error: Error, customer: Document) {
+                    if (error) {
+                        response.send(error);
+                        return;
+                    }
+
+                    response.json(customer);
+                });
+        }
+    }
+
     /**
      * add a new reservation into database
      * @param request {Request} service request object
@@ -19,8 +57,25 @@ export class ReservationServices {
                 response.send(error);
                 return;
             }
-            
-            response.json(document);
+
+            if (request.body.customers) {
+                Reservation.findOneAndUpdate({ _id: document._id }, { $addToSet: { customers: request.params.customers }})
+                    .populate('vehicle')
+                    .populate('vehiclePrices')
+                    .populate('vehiclePricesDiscounts')
+                    .populate('user')
+                    .populate('customers')
+                    .exec((errorReservation: Error, documentReservation: any) => {
+                        if (errorReservation) {
+                            response.send(errorReservation);
+                            return;
+                        }
+
+                        response.json(documentReservation);  
+                    });
+            }else {            
+                response.json(document);
+            }
         });
     }
 

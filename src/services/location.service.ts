@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { GoogleMapsClientWithPromise, Language } from '@google/maps';
 import { MongooseDocument, Mongoose } from 'mongoose';
-import { Location, getLocation } from '../models/location.model';
 import * as ErrorMessages from '../constants/errors.constants';
 import { TokenHelper } from '../utils/token.helper';
 import { 
@@ -29,60 +28,6 @@ export class LocationServices {
      */
     constructor(private _language: string, private _country: string, private _googleMapApi: GoogleMapsClientWithPromise) { 
         this._sessionToken = '';
-    }
-
-    /**
-     * add a new location into database
-     * @param request {Request} service request object
-     * @param response {Response} service response object
-     */
-    public addLocation(request: Request, response: Response) {
-        const newLocation = new Location(request.body);
-        newLocation.save((error: Error, document: MongooseDocument) => {
-            if (error) {
-                response.send(error);
-                return;
-            }
-            response.json(document);
-        });
-    }
-
-    /**
-     * list all locations from database
-     * @param request {Request} service request object
-     * @param response {Response} service response object
-     */
-    public getAllLocations(request: Request, response: Response) {
-        Location.find({}, (error: Error, document: MongooseDocument) => {
-            if (error) {
-                response.send(error);
-                return;
-            }
-            response.json(document);
-        });
-    }
-
-    /**
-     * find location between two points
-     * @param request {Request} service request object
-     * @param response {Response} service response object
-     */
-    public getDirection(request: Request, response: Response) {
-        const locationData = request.body.data;
-        if (Array.isArray(locationData) && locationData.length == 2) {
-            const fromLocation = getLocation(new Location(locationData[0]));
-            const toLocation = getLocation(new Location(locationData[1]));
-            this._googleMapApi.directions({
-                origin: fromLocation,
-                destination: toLocation,
-            })
-            .asPromise()
-            .then((mapResponse) => {                
-                response.json(mapResponse.json);
-            }).catch(error => response.send(error));
-        }else {
-            response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETDIRECTION_1000);
-        }
     }
 
     /**

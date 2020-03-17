@@ -3,6 +3,7 @@ import { ApplicationServices } from './services/application.service';
 import { LocationServices } from './services/location.service';
 import { VehicleServices } from './services/vehicle.service';
 import { ReservationServices } from './services/reservation.service';
+import { UserServices } from './services/user.service';
 import { AuthHelper } from './utils/auth.helper';
 
 /**
@@ -39,6 +40,13 @@ export class Controller {
     private _reservationServices!: ReservationServices;
 
     /**
+     * user service object
+     * @type {UserServices}
+     * @private 
+     */
+    private _userServices!: UserServices;
+
+    /**
      * constructor
      * init location service
      * set routes
@@ -49,6 +57,7 @@ export class Controller {
         this._initLocationService();
         this._initVehicleService();
         this._initReservationService();
+        this._initUserService();
         this.routes();
     }
 
@@ -90,6 +99,14 @@ export class Controller {
     }
 
     /**
+     * init user services
+     * @private
+     */
+    private _initUserService() {
+        this._userServices = new UserServices();
+    }
+
+    /**
      * set routes for service apis
      */
     public routes() {
@@ -98,6 +115,7 @@ export class Controller {
         this._addLocationServiceRoutes();
         this._addVehicleServiceRoutes();
         this._addReservationServiceRoutes();
+        this._addUserServiceRoutes();
     }
 
     /**
@@ -115,10 +133,6 @@ export class Controller {
      * @private
      */
     private _addLocationServiceRoutes() {
-        this._application.route('/addLocation').post(AuthHelper.authenticate, this._locationServices.addLocation);
-        this._application.route('/getAllLocations').get(AuthHelper.authenticate, this._locationServices.getAllLocations);
-
-        this._application.route('/getDirection').post(AuthHelper.authenticate, this._locationServices.getDirection.bind(this._locationServices));
         this._application.route('/getClosestPlaces').post(AuthHelper.authenticate, this._locationServices.getClosestPlaces.bind(this._locationServices));
         this._application.route('/getLocationAddress').post(AuthHelper.authenticate, this._locationServices.getLocationAddress.bind(this._locationServices));
         this._application.route('/getLocationDetail').post(AuthHelper.authenticate, this._locationServices.getLocationDetail.bind(this._locationServices));
@@ -141,7 +155,6 @@ export class Controller {
         this._application.route('/getAllServices').get(AuthHelper.authenticate, this._vehicleServices.getAllServices);
 
         this._application.route('/addServiceForVehicle/:vehicleId/:serviceId').post(AuthHelper.authenticate, this._vehicleServices.addServiceForVehicle.bind(this._vehicleServices));
-        this._application.route('/getAllServicesForAllVehicles').get(AuthHelper.authenticate, this._vehicleServices.getAllServicesForAllVehicles);
     }
 
     /**
@@ -149,6 +162,20 @@ export class Controller {
      * @private
      */
     private _addReservationServiceRoutes() {
+        this._application.route('/addCustomer').post(AuthHelper.authenticate, this._reservationServices.addCustomer);
+        this._application.route('/getCustomersOfUser/:userId').post(AuthHelper.authenticate, this._reservationServices.getCustomersOfUser);
         this._application.route('/addReservation').post(AuthHelper.authenticate, this._reservationServices.addReservation);
+    }
+
+    /**
+     * add routes for user related services
+     * @private
+     */
+    private _addUserServiceRoutes() {
+        this._application.route('/addUser').post(AuthHelper.authenticate, this._userServices.addUser);
+        // this._application.route('/updateUser/:id').post(AuthHelper.authenticate, this._userServices.updateUser);
+        this._application.route('/getAllUsers').post(AuthHelper.authenticate, this._userServices.getAllUsers);
+
+        this._application.route('/login').post(AuthHelper.authenticate, this._userServices.login);
     }
 }

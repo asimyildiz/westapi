@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const InvoiceSchema = new mongoose.Schema({
+    reservation: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Reservation'
+    },
     name: {
         type: String,
         required: 'Name field is required'
@@ -21,11 +25,7 @@ const InvoiceSchema = new mongoose.Schema({
     },
     taxId: {
         type: String
-    },
-    reservations: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Reservation'
-    }]
+    }
 }, {
     collection: 'Invoice',
     timestamps: true,
