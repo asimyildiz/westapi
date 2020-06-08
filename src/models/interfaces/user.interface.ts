@@ -12,5 +12,6 @@ export interface IUserDocument extends Document {
     password: string,
     phone: string,
     passport: string,
+    isActive: boolean,
     reservations: Array<Schema.Types.ObjectId>;
 }

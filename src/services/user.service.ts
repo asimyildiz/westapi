@@ -26,14 +26,42 @@ export class UserServices {
     }
 
     /**
+     * delete a user (get it to false)
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public deleteUser(request: Request, response: Response) {
+        const userId = request.params.id;
+        if (userId) {
+            User.findOneAndUpdate(
+                { _id: userId }, 
+                { $set: 
+                    { 
+                        isActive: false
+                    }
+                },
+                { new: true })
+            .exec((errorUser: Error, documentUser: any) => {
+                if (errorUser) {
+                    response.send(errorUser);
+                    return;
+                }
+    
+                response.json(documentUser);    
+            });
+        }        
+    }
+
+    /**
      * update user information in database
      * @param request {Request} service request object
      * @param response {Response} service response object
      */
     public updateUser(request: Request, response: Response) {
         const userData = request.body;
-        if (userData && request.params.id) {
-            User.findOneAndUpdate({ _id: request.params.id }, { $set: 
+        const userId = request.params.id;
+        if (userData && userId) {
+            User.findOneAndUpdate({ _id: userId }, { $set: 
                 { 
                     title : userData.title,
                     name : userData.name,
@@ -64,8 +92,8 @@ export class UserServices {
     public login(request: Request, response: Response) {
         const userData = request.body;
         if (userData && userData.email && userData.password) {
-            User.findOne({ email: userData.email })
-                .exec((error: Error, user:IUserModel) => {
+            User.findOne({ email: userData.email, isActive: true })
+                .exec((error: Error, user: IUserModel) => {
                     if (error) {
                         response.send(error);
                         return;
@@ -94,10 +122,9 @@ export class UserServices {
      * list all users from database
      * @param request {Request} service request object
      * @param response {Response} service response object
-     * !TODO NO ACCESS FOR THIS METHOD EXCEPT ADMIN
      */
     public getAllUsers(request: Request, response: Response) {
-        User.find({})
+        User.find({ isActive: true })
             .populate('reservations')
             .exec((error: Error, document: MongooseDocument) => {
                 if (error) {

@@ -1,10 +1,13 @@
 import { Request, Response } from 'express';
-import { GoogleMapsClientWithPromise, Language } from '@google/maps';
+import { GoogleMapsClientWithPromise, Language, TravelMode, DirectionsRoute } from '@google/maps';
 import { MongooseDocument, Mongoose } from 'mongoose';
 import * as ErrorMessages from '../constants/errors.constants';
+import { Poi } from '../models/poi.model';
 import { TokenHelper } from '../utils/token.helper';
+import { RouteHelper } from '../utils/route.helper';
 import { 
-    DEFAULT_RADIUS_FOR_SEARCH, APPLICATION_LANGUAGES
+    DEFAULT_RADIUS_FOR_SEARCH,
+    APPLICATION_LANGUAGES
 } from '../constants/westapi.contants';
 
 /**
@@ -12,23 +15,13 @@ import {
  * @classdesc location service api methods
  */
 export class LocationServices {
-
-    /**
-     * session token
-     * @type {string}
-     * @private
-     */
-    private _sessionToken: string;
-
     /**
      * constructor
      * @param _language {string} application language - constructor assignment
      * @param _country {string} application country - constructor assignment
      * @param _googleMapApi {GoogleMapsClientWithPromise} google map api object - constructor assignment
      */
-    constructor(private _language: string, private _country: string, private _googleMapApi: GoogleMapsClientWithPromise) { 
-        this._sessionToken = '';
-    }
+    constructor(private _language: string, private _country: string, private _googleMapApi: GoogleMapsClientWithPromise) { }
 
     /**
      * find location between two points using latitude and longitude
@@ -40,14 +33,56 @@ export class LocationServices {
         const fromLongitude = request.body.fromLongitude;
         const toLatitude = request.body.toLatitude;
         const toLongitude = request.body.toLongitude;
-        if (fromLatitude && fromLongitude && toLatitude && toLongitude) {
-            this._googleMapApi.directions({
+        const directionAddress = request.body.directionAddress;
+        if (fromLatitude && fromLongitude && toLatitude && toLongitude && directionAddress) {
+            let query = <any>{
                 origin: `${fromLatitude},${fromLongitude}`,
                 destination: `${toLatitude},${toLongitude}`,
-            })
+                mode: 'driving',
+                language: this._language as Language,
+                units: 'metric',
+                departure_time: 'now' //MAYBE PASS DATE AND TIME OF REQUEST
+            };
+            
+            const matches = directionAddress.toLocaleLowerCase().match(/istanbul/ig);
+            if (matches && matches.length != 2) {
+                query.avoid = ['tolls', 'ferries'];
+            }
+            
+            this._googleMapApi.directions(query)
             .asPromise()
-            .then((mapResponse) => {                
-                response.json(mapResponse.json);
+            .then((mapResponse) => {
+                const jsonResponse = mapResponse.json;
+                if (jsonResponse.status == 'OK' && jsonResponse.routes.length) {                       
+                    return Promise.resolve(jsonResponse.routes[0]);
+                }else {
+                    response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETROUTE_1001);
+                }
+            }).then((route) => {
+                if (route) {
+                    Poi.find()            
+                        .exec((error: Error, document: MongooseDocument) => {
+                            if (error) {
+                                response.send(error);
+                                return;
+                            }
+
+                            const decodedRoute = RouteHelper.decode([{polyline: route.overview_polyline}], document);
+                            response.json({
+                                distance: route.legs.reduce((carry, curr) => {
+                                    return carry + curr.distance.value;
+                                }, 0) / 1000,
+                                duration: route.legs.reduce((carry, curr) => {
+                                    return carry + (curr.duration_in_traffic ? curr.duration_in_traffic.value : curr.duration.value);
+                                }, 0) / 60,
+                                coordinates: decodedRoute.points,
+                                extras: decodedRoute.extras,
+                                fare: route.fare
+                            });
+                        });
+                }else {
+                    response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETROUTE_1001);
+                }
             }).catch(error => response.send(error));
         }else {
             response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETROUTE_1001);

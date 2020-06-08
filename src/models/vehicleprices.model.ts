@@ -19,11 +19,11 @@ const VehiclePricesSchema = new mongoose.Schema({
     },
     currency: {
         type: String,
-        default: 'TRY'
+        default: 'try'
     },
     isActive: {
         type: Boolean,
-        default: false
+        default: true
     },
     vehiclePricesDiscounts: [{
         type: mongoose.Schema.Types.ObjectId,

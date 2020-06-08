@@ -28,6 +28,10 @@ const VehiclePricesDiscountSchema = new mongoose.Schema({
     name: {
         type: String,
         default: ''
+    },
+    isActive: {
+        type: Boolean,
+        default: true
     }
 }, {
     collection: 'VehiclePricesDiscount',

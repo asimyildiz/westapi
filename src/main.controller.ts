@@ -4,6 +4,8 @@ import { LocationServices } from './services/location.service';
 import { VehicleServices } from './services/vehicle.service';
 import { ReservationServices } from './services/reservation.service';
 import { UserServices } from './services/user.service';
+import { PoiServices } from './services/poi.service';
+import { PaymentServices } from './services/payment.service';
 import { AuthHelper } from './utils/auth.helper';
 
 /**
@@ -47,6 +49,20 @@ export class Controller {
     private _userServices!: UserServices;
 
     /**
+     * poi service object
+     * @type {PoiServices}
+     * @private
+     */
+    private _poiServices!: PoiServices;
+
+    /**
+     * payment service object
+     * @type {PaymentServices}
+     * @private
+     */
+    private _paymentServices!: PaymentServices;
+
+    /**
      * constructor
      * init location service
      * set routes
@@ -58,6 +74,8 @@ export class Controller {
         this._initVehicleService();
         this._initReservationService();
         this._initUserService();
+        this._initPoiService();        
+        this._initPaymentService();
         this.routes();
     }
 
@@ -107,6 +125,22 @@ export class Controller {
     }
 
     /**
+     * init poi services
+     * @private
+     */
+    private _initPoiService() {
+        this._poiServices = new PoiServices();
+    }
+
+    /**
+     * init payment services
+     * @private
+     */
+    private _initPaymentService() {
+        this._paymentServices = new PaymentServices();
+    }
+
+    /**
      * set routes for service apis
      */
     public routes() {
@@ -116,6 +150,8 @@ export class Controller {
         this._addVehicleServiceRoutes();
         this._addReservationServiceRoutes();
         this._addUserServiceRoutes();
+        this._addPoiServiceRoutes();
+        this._addPaymentServiceRoutes();
     }
 
     /**
@@ -143,18 +179,18 @@ export class Controller {
      * add routes for vehicle related services
      * @private
      */
-    private _addVehicleServiceRoutes() {
-        this._application.route('/addVehicle').post(AuthHelper.authenticate, this._vehicleServices.addVehicle.bind(this._vehicleServices));
-        this._application.route('/addVehiclePrice/:id').post(AuthHelper.authenticate, this._vehicleServices.addVehiclePrice);
-        this._application.route('/addVehiclePricesDiscount/:id').post(AuthHelper.authenticate, this._vehicleServices.addVehiclePricesDiscount);
-        this._application.route('/getAllVehicles').get(AuthHelper.authenticate, this._vehicleServices.getAllVehicles);
+    private _addVehicleServiceRoutes() {        
+        this._application.route('/getAllServices').get(AuthHelper.authenticate, this._vehicleServices.getAllServices);
+        this._application.route('/getAllVehicles').post(AuthHelper.authenticate, this._vehicleServices.getAllVehicles.bind(this._vehicleServices));
         this._application.route('/getAllVehiclePrices').get(AuthHelper.authenticate, this._vehicleServices.getAllVehiclePrices);
         this._application.route('/getAllVehiclePricesDiscounts').get(AuthHelper.authenticate, this._vehicleServices.getAllVehiclePricesDiscounts);
 
-        this._application.route('/addService').post(AuthHelper.authenticate, this._vehicleServices.addService.bind(this._vehicleServices));
-        this._application.route('/getAllServices').get(AuthHelper.authenticate, this._vehicleServices.getAllServices);
-
-        this._application.route('/addServiceForVehicle/:vehicleId/:serviceId').post(AuthHelper.authenticate, this._vehicleServices.addServiceForVehicle.bind(this._vehicleServices));
+        // THESE METHODS WILL REQUIRE AN ADMIN LOGIN
+        this._application.route('/addVehicle').post(AuthHelper.authenticate, this._vehicleServices.addVehicle.bind(this._vehicleServices));
+        this._application.route('/addVehiclePrice/:id').post(AuthHelper.authenticate, this._vehicleServices.addVehiclePrice);
+        this._application.route('/addVehiclePricesDiscount/:id').post(AuthHelper.authenticate, this._vehicleServices.addVehiclePricesDiscount);        
+        this._application.route('/addService').post(AuthHelper.authenticate, this._vehicleServices.addService.bind(this._vehicleServices));        
+        this._application.route('/addServiceForVehicle/:vehicleId/:serviceId').post(AuthHelper.authenticate, this._vehicleServices.addServiceForVehicle.bind(this._vehicleServices));        
     }
 
     /**
@@ -173,9 +209,34 @@ export class Controller {
      */
     private _addUserServiceRoutes() {
         this._application.route('/addUser').post(AuthHelper.authenticate, this._userServices.addUser);
-        // this._application.route('/updateUser/:id').post(AuthHelper.authenticate, this._userServices.updateUser);
-        this._application.route('/getAllUsers').post(AuthHelper.authenticate, this._userServices.getAllUsers);
-
         this._application.route('/login').post(AuthHelper.authenticate, this._userServices.login);
+
+        // THESE METHODS WILL REQUIRE AN ADMIN LOGIN
+        this._application.route('/getAllUsers').post(AuthHelper.authenticate, this._userServices.getAllUsers);
+        this._application.route('/updateUser/:id').post(AuthHelper.authenticate, this._userServices.updateUser);
+        this._application.route('/deleteUser/:id').delete(AuthHelper.authenticate, this._userServices.deleteUser);
+    }
+
+    /**
+     * add routes for poi related services
+     * @private
+     */
+    private _addPoiServiceRoutes() {
+        this._application.route('/getAllPoi').get(AuthHelper.authenticate, this._poiServices.getAllPoi);
+        
+        // THESE METHODS WILL REQUIRE AN ADMIN LOGIN
+        this._application.route('/addPoi').post(AuthHelper.authenticate, this._poiServices.addPoi);        
+        this._application.route('/updatePoi/:id').post(AuthHelper.authenticate, this._poiServices.updatePoi);
+        this._application.route('/deletePoi/:id').delete(AuthHelper.authenticate, this._poiServices.deletePoi);
+    }
+
+    /**
+     * add routes for payment related services
+     * @private
+     */
+    private _addPaymentServiceRoutes() {
+        this._application.route('/pay').post(this._paymentServices.enroll.bind(this._paymentServices));
+        this._application.route('/paymentSuccess').post(this._paymentServices.success.bind(this._paymentServices));
+        this._application.route('/paymentFailure').post(this._paymentServices.failure.bind(this._paymentServices));
     }
 }

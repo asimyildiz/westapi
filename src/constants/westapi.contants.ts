@@ -5,6 +5,12 @@
 export const PORT = 8080;
 
 /**
+ * service api gateway url
+ * @type {String}
+ */
+export const WEST_API_URL = `http://westapi.westeurope.cloudapp.azure.com/${PORT}`;
+
+/**
  * database connection string
  * @type {string}
  */
@@ -21,6 +27,20 @@ export const GOOGLEMAP_API_KEY = 'AIzaSyCdzYtHIF_8y5wvAe9ad30VuaYB0USZdhY';
  * @type {string}
  */
 export const APPLICATION_API_KEY = 'bc304ad0503a6360f8124d23c033487f';
+
+/**
+ * payment api merchant id
+ * TODO read from env
+ * @type {string}
+ */
+export const PAYMENT_MERCHANT_ID = '000000000155408';
+
+/**
+ * payment api merchant password
+ * TODO read from env
+ * @type {string}
+ */
+export const PAYMENT_MERCHANT_PASSWORD = 'e5H9Ztb8';
 
 /**
  * application ids
@@ -105,3 +125,9 @@ export const DEFAULT_APPLICATION_COUNTRY = 'tr';
  * @type {Number}
  */
 export const DEFAULT_RADIUS_FOR_SEARCH = 5000;
+
+/**
+ * driving mode for directions api
+ * @type {string}
+ */
+export const DEFAULT_DIRECTIONS_MODE = 'DRIVING';

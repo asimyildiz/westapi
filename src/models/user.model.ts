@@ -51,6 +51,10 @@ const UserSchema: Schema = new Schema({
     passport: {
         type: String
     },
+    isActive: {
+        type: Boolean,
+        default: true
+    },
     reservations: [{
         type: Schema.Types.ObjectId,
         ref: 'Reservation'

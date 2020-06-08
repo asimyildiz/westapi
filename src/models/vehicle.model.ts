@@ -17,6 +17,10 @@ const VehicleSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    isActive: {
+        type: Boolean,
+        default: true
+    },
     images: [{
         type: String
     }],

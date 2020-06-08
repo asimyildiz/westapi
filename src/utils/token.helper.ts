@@ -29,6 +29,15 @@ export class TokenHelper {
     }
 
     /**
+     * always generate a new token
+     * @returns {string}
+     * @static
+     */
+    static generateNewToken() {
+        return uuid();
+    }
+
+    /**
      * clear current token
      * @static
      */

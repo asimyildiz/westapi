@@ -80,3 +80,15 @@ export const ERROR_USER_WRONG_PASSWORD_3002: ErrorMessage = { code: '3002', mess
  * @type {ErrorMessage}
  */
 export const ERROR_USER_NO_DATA_UPDATE_3003: ErrorMessage = { code: '3003', message: 'Please send user information and email to update user' };
+
+/**
+ * poi, no data to update
+ * @type {ErrorMessage}
+ */
+export const ERROR_POI_NO_DATA_UPDATE_4000: ErrorMessage = { code: '4000', message: 'Please send poi information to update poi' };
+
+/**
+ * payment failure
+ * @type {ErrorMessage}
+ */
+export const ERROR_PAYMENT_FAILURE_5000: ErrorMessage = { code: '5000', message: 'Please send payment information' };

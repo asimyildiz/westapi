@@ -20,7 +20,7 @@ export class ReservationServices {
                 response.send(error);
                 return;
             }
-            
+
             response.json(document);
         });
     }
@@ -31,17 +31,17 @@ export class ReservationServices {
      * @param response {Response} service response object
      */
     public getCustomersOfUser(request: Request, response: Response) {
-        const customerData = request.params;
-        if (customerData && customerData.userId) {
-            Customer.findOne({ user: customerData.userId })
-                .exec(function (error: Error, customer: Document) {
-                    if (error) {
-                        response.send(error);
-                        return;
-                    }
+        const userId = request.params.userId;
+        if (userId) {
+            Customer.findOne({ user: userId })
+            .exec(function (error: Error, customer: Document) {
+                if (error) {
+                    response.send(error);
+                    return;
+                }
 
-                    response.json(customer);
-                });
+                response.json(customer);
+            });
         }
     }
 

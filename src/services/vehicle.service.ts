@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, response } from 'express';
 import multer from 'multer';
 import { FileHelper, FileUploadRequest } from '../utils/file.helper';
+import { PriceHelper } from '../utils/price.helper';
 import { MongooseDocument, Mongoose } from 'mongoose';
 import { Vehicle } from '../models/vehicle.model';
 import { ICON_FOLDER } from '../constants/westapi.contants';
@@ -16,29 +17,11 @@ import { Service } from '../models/service.model';
 export class VehicleServices {
 
     /**
-     * vehicle service update count
-     * to check if all updates completed
-     * @type {number}
-     * @private
-     */
-    private _vehicleServiceUpdateCount: number;
-
-    /**
-     * number of updates neeed for service to return response
-     * @type {number}
-     * @private
-     * @readonly
-     */
-    private readonly NUMBER_OF_UPDATES_FOR_VEHICLE_SERVICE = 2;
-
-    /**
      * constructor
      * @param _fileStorage {multer.StorageEngine} file storage - constructor assignment
      * @param _iconFileStorage {multer.StorageEngine} file icon storage - constructor assignment
      */
-    constructor(private _fileStorage: multer.StorageEngine, private _iconFileStorage: multer.StorageEngine) { 
-        this._vehicleServiceUpdateCount = 0;
-    }
+    constructor(private _fileStorage: multer.StorageEngine, private _iconFileStorage: multer.StorageEngine) { }
 
     /**
      * list all vehicles from database
@@ -46,28 +29,64 @@ export class VehicleServices {
      * @param response {Response} service response object
      */
     public getAllVehicles(request: Request, response: Response) {
-        Vehicle.find({})
+        const origin = request.body.origin;
+        const destination = request.body.destination;
+        const distance = request.body.distance;
+        const extras = request.body.extras;
+        const goDate = request.body.goDate;
+        const returnDate = request.body.returnDate;
+
+        let query = this.__getQueryDate(goDate, returnDate);
+        Vehicle.find({ isActive: true })
             .populate({
                 path: 'vehiclePrices',
+                match: { isActive: true },
                 populate: {
                     path: 'vehiclePricesDiscounts',
-                    model: 'VehiclePricesDiscount'
+                    model: 'VehiclePricesDiscount',                    
+                    match: query,
                 }
             })
             .populate({
-                path: 'services',
-                populate: {
-                    path: 'service',
-                    model: 'Service'
-                }
+                path: 'services',                
+                match: { isActive: true }
             })
+            .lean()
             .exec((error: Error, document: MongooseDocument) => {
                 if (error) {
                     response.send(error);
                     return;
                 }
+
+                PriceHelper.calculate(document, origin, destination, distance, extras);
                 response.json(document);
             });
+    }
+
+    /**
+     * get query date for go and return
+     * @param goDate {string}
+     * @param returnDate {string}
+     * @private
+     */
+    private __getQueryDate(goDate: string, returnDate: string) {
+        let query = <any>{ isActive: true };
+        if (goDate && typeof goDate == 'string') {
+            query.startDate = {
+                "$gte": new Date(goDate)
+            };
+
+            if (returnDate && typeof returnDate == 'string') {
+                query.endDate = {
+                    "$lte": new Date(returnDate)
+                };
+            }else {
+                query.endDate = {
+                    "$lte": new Date(goDate)
+                };
+            }
+        }
+        return query;
     }
 
     /**
@@ -78,7 +97,7 @@ export class VehicleServices {
     public addVehicle(request: Request, response: Response) {
         const fileUploadRequest = request as FileUploadRequest;
         let upload = multer({ storage: this._fileStorage, fileFilter: FileHelper.filterImage }).array('images', 10);
-        upload(fileUploadRequest, response, (error) => {
+        upload(fileUploadRequest, response, (error: any) => {
             if (fileUploadRequest.fileValidationError) {
                 response.send(fileUploadRequest.fileValidationError);
                 return;
@@ -123,8 +142,11 @@ export class VehicleServices {
      * @param response {Response} service response object
      */
     public getAllVehiclePrices(request: Request, response: Response) {
-        VehiclePrices.find({})
-            .populate('vehiclePricesDiscounts')            
+        VehiclePrices.find({ isActive: true })
+            .populate({
+                path: 'vehiclePricesDiscounts',
+                match: { isActive: true },
+            })            
             .exec((error: Error, document: MongooseDocument) => {
                 if (error) {
                     response.send(error);
@@ -149,10 +171,12 @@ export class VehicleServices {
 
             Vehicle.findOneAndUpdate({ _id: request.params.id }, { $push: { vehiclePrices: document._id }}, { new: true })
                 .populate({
-                    path: 'vehiclePrices',
+                    path: 'vehiclePrices',                    
+                    match: { isActive: true },
                     populate: {
                         path: 'vehiclePricesDiscounts',
-                        model: 'VehiclePricesDiscount'
+                        model: 'VehiclePricesDiscount',
+                        match: { isActive: true }
                     }
                 })
                 .exec((errorVehicle: Error, documentVehicle: any) => {
@@ -167,12 +191,39 @@ export class VehicleServices {
     }
 
     /**
+     * delete a vehicle price (get it to false)
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public deleteVehiclePrice(request: Request, response: Response) {
+        const vehiclePriceId = request.params.id;
+        if (vehiclePriceId) {
+            VehiclePrices.findOneAndUpdate(
+                { _id: vehiclePriceId }, 
+                { $set: 
+                    { 
+                        isActive: false
+                    }
+                },
+                { new: true })
+            .exec((errorVehiclePrice: Error, documentVehiclePrice: any) => {
+                if (errorVehiclePrice) {
+                    response.send(errorVehiclePrice);
+                    return;
+                }
+    
+                response.json(documentVehiclePrice);    
+            });
+        }        
+    }
+
+    /**
      * list all vehicle price discounts from database
      * @param request {Request} service request object
      * @param response {Response} service response object
      */
     public getAllVehiclePricesDiscounts(request: Request, response: Response) {
-        VehiclePricesDiscount.find({})            
+        VehiclePricesDiscount.find({ isActive: true })            
             .exec((error: Error, document: MongooseDocument) => {
                 if (error) {
                     response.send(error);
@@ -196,7 +247,10 @@ export class VehicleServices {
             }
 
             VehiclePrices.findOneAndUpdate({ _id: request.params.id }, { $push: { vehiclePricesDiscounts: document._id }}, { new: true })
-                .populate('vehiclePricesDiscounts')
+                .populate({ 
+                    path: 'vehiclePricesDiscounts',                    
+                    match: { isActive: true }
+                })
                 .exec((errorVehiclePrices: Error, documentVehiclePrices: any) => {
                     if (errorVehiclePrices) {
                         response.send(errorVehiclePrices);
@@ -209,12 +263,38 @@ export class VehicleServices {
     }
 
     /**
+     * delete a vehicle price discount (get it to false)
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public deleteVehiclePriceDiscount(request: Request, response: Response) {
+        const vehiclePriceDiscountId = request.params.id;
+        if (vehiclePriceDiscountId) {
+            VehiclePricesDiscount.findOneAndUpdate({ _id: vehiclePriceDiscountId }, 
+                { $set: 
+                    { 
+                        isActive: false
+                    }
+                },
+                { new: true })
+            .exec((errorVehiclePriceDiscount: Error, documentVehiclePriceDiscount: any) => {
+                if (errorVehiclePriceDiscount) {
+                    response.send(errorVehiclePriceDiscount);
+                    return;
+                }
+    
+                response.json(documentVehiclePriceDiscount);    
+            });
+        }        
+    }
+
+    /**
      * list all services from database
      * @param request {Request} service request object
      * @param response {Response} service response object
      */
     public getAllServices(request: Request, response: Response) {
-        Service.find({})
+        Service.find({ isActive: true })
             .exec((error: Error, document: MongooseDocument) => {
                 if (error) {
                     response.send(error);
@@ -232,7 +312,7 @@ export class VehicleServices {
     public addService(request: Request, response: Response) {
         const fileUploadRequest = request as FileUploadRequest;
         let upload = multer({ storage: this._iconFileStorage, fileFilter: FileHelper.filterImage }).single('icon');
-        upload(fileUploadRequest, response, (error) => {
+        upload(fileUploadRequest, response, (error: any) => {
             if (fileUploadRequest.fileValidationError) {
                 response.send(fileUploadRequest.fileValidationError);
                 return;
@@ -246,6 +326,32 @@ export class VehicleServices {
 
             this._saveServiceToDatabase(fileUploadRequest, response);            
         });
+    }
+    
+    /**
+     * delete a service (get it to false)
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public deleteService(request: Request, response: Response) {
+        const serviceId = request.params.id;
+        if (serviceId) {
+            Service.findOneAndUpdate({ _id: serviceId }, 
+                { $set: 
+                    { 
+                        isActive: false
+                    }
+                },
+                { new: true })
+            .exec((errorService: Error, documentService: any) => {
+                if (errorService) {
+                    response.send(errorService);
+                    return;
+                }
+    
+                response.json(documentService);    
+            });
+        }        
     }
 
     /**
@@ -276,8 +382,19 @@ export class VehicleServices {
      */
     public addServiceForVehicle(request: Request, response: Response) {
         Vehicle.findOneAndUpdate({ _id: request.params.vehicleId }, { $addToSet: { services: request.params.serviceId }})        
-            .populate('vehiclePrices')
-            .populate('services')
+            .populate({
+                path: 'vehiclePrices',                
+                match: { isActive: true },
+                populate: {
+                    path: 'vehiclePricesDiscounts',
+                    model: 'VehiclePricesDiscount',
+                    match: { isActive: true }
+                }
+            })
+            .populate({
+                path: 'services',                
+                match: { isActive: true }
+            })
             .exec((errorVehicle: Error, documentVehicle: any) => {
                 if (errorVehicle) {
                     response.send(errorVehicle);

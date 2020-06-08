@@ -28,6 +28,10 @@ const ServiceSchema = new mongoose.Schema({
     maxLimit: {
         type: Number,
         default: 1
+    },
+    isActive: {
+        type: Boolean,
+        default: true
     }
 }, {
     collection: 'Service',
