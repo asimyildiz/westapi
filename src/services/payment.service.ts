@@ -209,7 +209,7 @@ export class PaymentServices {
      */
     public success(request: Request, response: Response) {
         response.set('Content-Type', 'text/html');
-        response.send(new Buffer('window.postMessage("success")'));
+        response.send(new Buffer('<script type="text/javascript">window.postMessage("success")</script>'));
     }
 
     /**
@@ -219,6 +219,6 @@ export class PaymentServices {
      */
     public failure(request: Request, response: Response) {
         response.set('Content-Type', 'text/html');
-        response.send(new Buffer('window.postMessage("failure")'));
+        response.send(new Buffer('<script type="text/javascript">window.postMessage("failure")</script>'));
     }
 }
