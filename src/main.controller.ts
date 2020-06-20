@@ -186,6 +186,7 @@ export class Controller {
         this._application.route('/getAllVehiclePricesDiscounts').get(AuthHelper.authenticate, this._vehicleServices.getAllVehiclePricesDiscounts);
 
         // THESE METHODS WILL REQUIRE AN ADMIN LOGIN
+        this._application.route('/getAllVehicleList').get(AuthHelper.authenticate, this._vehicleServices.getAllVehicleList);
         this._application.route('/addVehicle').post(AuthHelper.authenticate, this._vehicleServices.addVehicle.bind(this._vehicleServices));
         this._application.route('/addVehiclePrice/:id').post(AuthHelper.authenticate, this._vehicleServices.addVehiclePrice);
         this._application.route('/addVehiclePricesDiscount/:id').post(AuthHelper.authenticate, this._vehicleServices.addVehiclePricesDiscount);        

@@ -1,10 +1,6 @@
 import mongoose from 'mongoose';
 
 const VehiclePricesSchema = new mongoose.Schema({
-    vehicle: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vehicle'
-    },
     minPrice: {
         type: Number,
         required: 'Vehicle min price field is required'
@@ -34,17 +30,6 @@ const VehiclePricesSchema = new mongoose.Schema({
     timestamps: true,
     toJSON: {
         virtuals: true
-    }
-});
-
-// this is to ensure that there is only one active price for a currency
-// if we try to set multiple active price, mongoose will fire an exception
-VehiclePricesSchema.index({
-    currency: 1    
-}, {
-    unique: true,
-    partialFilterExpression: {
-        isActive: { $eq: true }
     }
 });
 

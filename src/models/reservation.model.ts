@@ -25,6 +25,9 @@ const ReservationSchema = new mongoose.Schema({
         type: String,
         required: 'End location is required'
     },
+    paymentId: {
+        type: String
+    },
     startLatLon: {
         type: String
     },
@@ -58,6 +61,10 @@ const ReservationSchema = new mongoose.Schema({
     customers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Customer'
+    }],
+    invoices: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Invoice'
     }]
 }, {
     collection: 'Reservation',

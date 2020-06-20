@@ -90,6 +90,34 @@ export class VehicleServices {
     }
 
     /**
+     * list all vehicles from database
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public getAllVehicleList(request: Request, response: Response) {
+        Vehicle.find({ isActive: true })
+            .populate({
+                path: 'vehiclePrices',
+                match: { isActive: true },
+                populate: {
+                    path: 'vehiclePricesDiscounts',
+                    model: 'VehiclePricesDiscount'
+                }
+            })
+            .populate({
+                path: 'services',                
+                match: { isActive: true }
+            })
+            .exec((error: Error, document: MongooseDocument) => {
+                if (error) {
+                    response.send(error);
+                    return;
+                }
+                response.json(document);
+            });
+    }
+
+    /**
      * add a new vehicle into database
      * @param request {Request} service request object
      * @param response {Response} service response object
@@ -169,7 +197,7 @@ export class VehicleServices {
                 return;
             }
 
-            Vehicle.findOneAndUpdate({ _id: request.params.id }, { $push: { vehiclePrices: document._id }}, { new: true })
+            Vehicle.findOneAndUpdate({ _id: request.params.id }, { $set: { vehiclePrices: document._id }}, { new: true })
                 .populate({
                     path: 'vehiclePrices',                    
                     match: { isActive: true },

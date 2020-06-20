@@ -8,7 +8,8 @@ export const PORT = 8080;
  * service api gateway url
  * @type {String}
  */
-export const WEST_API_URL = `http://westapi.westeurope.cloudapp.azure.com/${PORT}`;
+export const WEST_API_URL = `http://westapi.westeurope.cloudapp.azure.com:${PORT}`;
+//export const WEST_API_URL = `http://10.0.2.2:${PORT}`;
 
 /**
  * database connection string
@@ -41,6 +42,14 @@ export const PAYMENT_MERCHANT_ID = '000000000155408';
  * @type {string}
  */
 export const PAYMENT_MERCHANT_PASSWORD = 'e5H9Ztb8';
+
+/**
+ * terminal information
+ * @type {String}
+ * @private 
+ * @readonly
+ */
+export const PAYMENT_MERCHANT_TERMINAL = 'VP153403';
 
 /**
  * application ids

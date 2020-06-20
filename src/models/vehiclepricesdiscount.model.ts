@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const VehiclePricesDiscountSchema = new mongoose.Schema({
-    vehiclePrices: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'VehiclePrices'
-    },
     discount: {
         type: Number,
         required: 'Discount percentage field is required'
