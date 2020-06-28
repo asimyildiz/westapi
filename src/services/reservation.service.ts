@@ -26,6 +26,25 @@ export class ReservationServices {
     }
 
     /**
+     * add multiple customers
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public addCustomers(request: Request, response: Response) {
+        Customer.insertMany(request.body.customers, { ordered: false }, (error: Error, document: MongooseDocument) => {  
+            Customer.find({ user: request.body.userId })
+                .exec(function (error: Error, customer: Document) {
+                    if (error) {
+                        response.send(error);
+                        return;
+                    }
+
+                    response.json(customer);
+                });
+        });            
+    }
+
+    /**
      * get all customers of a user
      * @param request {Request} service request object
      * @param response {Response} service response object
@@ -42,6 +61,8 @@ export class ReservationServices {
 
                 response.json(customer);
             });
+        }else {
+            response.json([]);
         }
     }
 
@@ -77,6 +98,33 @@ export class ReservationServices {
                 response.json(document);
             }
         });
+    }
+
+    /**
+     * get all reservations of a user
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public getAllReservations(request: Request, response: Response) {
+        const userId = request.params.userId;
+        if (userId) {
+            Reservation.find({ user: userId })
+                .populate('vehicle')
+                .populate('vehiclePrices')
+                .populate('vehiclePricesDiscounts')
+                .populate('user')
+                .populate('customers')
+                .exec((errorReservation: Error, documentReservation: any) => {
+                    if (errorReservation) {
+                        response.send(errorReservation);
+                        return;
+                    }
+
+                    response.json(documentReservation);  
+                });
+        }else {
+            response.json([]);
+        }        
     }
 
     /**

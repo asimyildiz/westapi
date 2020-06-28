@@ -16,7 +16,6 @@ import {
 import {
     ERROR_PAYMENT_FAILURE_5000
 } from '../constants/errors.constants';
-import { rhumbDistance } from '@turf/turf';
 
 /**
  * @class PaymentServices

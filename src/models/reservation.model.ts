@@ -58,6 +58,10 @@ const ReservationSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    isCanceled: {
+        type: Boolean,
+        default: false
+    },
     customers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Customer'

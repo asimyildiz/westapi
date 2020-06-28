@@ -13,7 +13,11 @@ const CustomerSchema = new mongoose.Schema({
     passport: {
         type: String,
         required: 'Customer passport field is required'
-    }
+    },
+    gender: {
+        type: String,
+        required: 'Customer gender field is required'
+    },
 }, {
     collection: 'Customer',
     timestamps: true,
