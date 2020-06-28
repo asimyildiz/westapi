@@ -1,47 +1,65 @@
+import * as dotenv from "dotenv";
+dotenv.config();
+
+let path;
+switch (process.env.NODE_ENV) {
+  case "production":
+    path = `${__dirname}/../../.env.production`;
+    break;
+  default:
+    path = `${__dirname}/../../.env.development`;
+}
+dotenv.config({ path: path });
+
 /**
  * service port number
  * @type {Number}
  */
-export const PORT = 8080;
+export const PORT = process.env.PORT || 8080;
 
 /**
  * service api gateway url
  * @type {String}
  */
 export const WEST_API_URL = `http://westapi.westeurope.cloudapp.azure.com:${PORT}`;
-//export const WEST_API_URL = `http://10.0.2.2:${PORT}`;
+
+/**
+ * service success and fail url
+ * @type {String}
+ */
+export const SUCCESS_FAIL_URL = `http://www.asimyildiz.com/animated-car`;
 
 /**
  * database connection string
  * @type {string}
  */
-export const DATABASE_CONNECTION = 'mongodb://127.0.0.1:27017/WestApi';
+export const DATABASE_CONNECTION = 'mongodb://db:27017/WestApi';
 
 /**
  * google map api key
  * @type {string}
  */
-export const GOOGLEMAP_API_KEY = 'AIzaSyCdzYtHIF_8y5wvAe9ad30VuaYB0USZdhY';
+export const GOOGLEMAP_API_KEY = process.env.GOOGLEMAP_API_KEY || '';
 
 /**
  * api key for client devices
  * @type {string}
  */
-export const APPLICATION_API_KEY = 'bc304ad0503a6360f8124d23c033487f';
+export const APPLICATION_API_KEY = process.env.APPLICATION_API_KEY || '';
 
 /**
  * payment api merchant id
  * TODO read from env
  * @type {string}
  */
-export const PAYMENT_MERCHANT_ID = '000000000155408';
+export const PAYMENT_MERCHANT_ID = process.env.PAYMENT_MERCHANT_ID || '';
 
 /**
  * payment api merchant password
  * TODO read from env
  * @type {string}
  */
-export const PAYMENT_MERCHANT_PASSWORD = 'e5H9Ztb8';
+export const PAYMENT_MERCHANT_PASSWORD = process.env.PAYMENT_MERCHANT_PASSWORD || '';
 
 /**
  * terminal information
@@ -49,7 +67,7 @@ export const PAYMENT_MERCHANT_PASSWORD = 'e5H9Ztb8';
  * @private 
  * @readonly
  */
-export const PAYMENT_MERCHANT_TERMINAL = 'VP153403';
+export const PAYMENT_MERCHANT_TERMINAL = process.env.PAYMENT_MERCHANT_TERMINAL || '';
 
 /**
  * application ids
@@ -61,7 +79,19 @@ export const APPLICATION_IDS = ['westmobile'];
  * secret key for JWT
  * @type {string}
  */
-export const SECRET_KEY = 'hDkRjLmJ15PxbP6a';
+export const SECRET_KEY = process.env.SECRET_KEY || '';
+
+/**
+ * enrollment api url for 3dpos operations
+ * @type {string}
+ */
+export const ENROLLMENT_API_URL = process.env.ENROLLMENT_API_URL || '';
+
+/**
+ * vpos api url for 3dpos operations
+ * @type {string}
+ */
+export const VPOS_API_URL = process.env.VPOS_API_URL || '';
 
 /**
  * allowed file types to be uploaded to server

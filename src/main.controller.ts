@@ -236,8 +236,6 @@ export class Controller {
      * @private
      */
     private _addPaymentServiceRoutes() {
-        this._application.route('/pay').post(this._paymentServices.enroll.bind(this._paymentServices));
-        this._application.route('/paymentSuccess').post(this._paymentServices.success.bind(this._paymentServices));
-        this._application.route('/paymentFailure').post(this._paymentServices.failure.bind(this._paymentServices));
+        this._application.route('/pay').post(this._paymentServices.enroll.bind(this._paymentServices));        
     }
 }

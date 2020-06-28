@@ -1,13 +1,17 @@
 import { Request, Response } from 'express';
 import * as HttpRequest from 'request';
 import * as Xml2JS from 'xml2js';
+import path from 'path';
 import { TokenHelper } from '../utils/token.helper';
 import * as ErrorMessages from '../constants/errors.constants';
 import { 
     PAYMENT_MERCHANT_ID,
     PAYMENT_MERCHANT_PASSWORD,
     PAYMENT_MERCHANT_TERMINAL,
-    WEST_API_URL
+    WEST_API_URL,
+    SUCCESS_FAIL_URL,
+    ENROLLMENT_API_URL,
+    VPOS_API_URL
 } from '../constants/westapi.contants';
 import {
     ERROR_PAYMENT_FAILURE_5000
@@ -72,26 +76,6 @@ export class PaymentServices {
     private enrollmentQueue = [];
 
     /**
-     * enrollment api gateway url
-     * TEST : https://3dsecuretest.vakifbank.com.tr:4443/MPIAPI/MPI_Enrollment.aspx
-     * PROD : https://3dsecure.vakifbank.com.tr:4443/MPIAPI/MPI_Enrollment.aspx
-     * @type {String}
-     * @private
-     * @readonly
-     */
-    private readonly ENROLLMENT_API_URL = 'https://3dsecure.vakifbank.com.tr:4443/MPIAPI/MPI_Enrollment.aspx ';
-
-    /**
-     * vpos api gateway url
-     * TEST : https://onlineodemetest.vakifbank.com.tr:4443/VposService/v3/Vposreq.aspx
-     * PROD : https://onlineodeme.vakifbank.com.tr:4443/VposService/v3/Vposreq.aspx
-     * @type {String}
-     * @private
-     * @readonly
-     */
-    private readonly VPOS_API_URL = 'https://onlineodeme.vakifbank.com.tr:4443/VposService/v3/Vposreq.aspx';
-
-    /**
      * transaction type
      * @type {String}
      * @private 
@@ -112,10 +96,11 @@ export class PaymentServices {
         const currency = request.body.currency;
         const cvc = request.body.cvc;
         const name = request.body.name;
+        const locale = request.body.locale;
         const clientIp = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
         const paymentId = TokenHelper.generateNewToken();
-        const successUrl = `${WEST_API_URL}/paymentSuccess`;
-        const failureUrl = `${WEST_API_URL}/paymentFailure`;
+        const successUrl = `${SUCCESS_FAIL_URL}/index-success.html?id=1&lang=${locale}`;
+        const failureUrl = `${SUCCESS_FAIL_URL}/index-failed.html?id=1&lang=${locale}`;
         if (creditCardNumber && expiryDate && cardType && amount && currency) {
             const paymentData = {
                 Pan: creditCardNumber.replace(/\s/g,''),
@@ -131,7 +116,7 @@ export class PaymentServices {
             };
 
             HttpRequest.post({
-                url: this.ENROLLMENT_API_URL,
+                url: ENROLLMENT_API_URL,
                 form: paymentData
             }, (error: any, httpResponse: any, body: any) => {
                 if (!error) {
@@ -191,7 +176,7 @@ export class PaymentServices {
             </VposRequest>`;
 
         HttpRequest.post({
-            url: this.VPOS_API_URL,
+            url: VPOS_API_URL,
             body: xmlRequest
         }, (error: any, httpResponse: any, body: any) => {
             if (error) {
@@ -200,25 +185,5 @@ export class PaymentServices {
                 response.json({ success: true });
             }
         });
-    }
-
-    /**
-     * 3d pos service success response
-     * @param request {Request} service request object
-     * @param response {Response} service response object
-     */
-    public success(request: Request, response: Response) {
-        response.set('Content-Type', 'text/html');
-        response.send(new Buffer('<script type="text/javascript">window.postMessage("success")</script>'));
-    }
-
-    /**
-     * 3d pos service fail response
-     * @param request {Request} service request object
-     * @param response {Response} service response object
-     */
-    public failure(request: Request, response: Response) {
-        response.set('Content-Type', 'text/html');
-        response.send(new Buffer('<script type="text/javascript">window.postMessage("failure")</script>'));
     }
 }
