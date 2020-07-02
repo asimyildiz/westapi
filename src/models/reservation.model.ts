@@ -62,6 +62,10 @@ const ReservationSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    isPaid: {
+        type: Boolean,
+        default: false
+    },
     customers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Customer'

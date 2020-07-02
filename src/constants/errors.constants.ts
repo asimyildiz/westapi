@@ -92,3 +92,9 @@ export const ERROR_POI_NO_DATA_UPDATE_4000: ErrorMessage = { code: '4000', messa
  * @type {ErrorMessage}
  */
 export const ERROR_PAYMENT_FAILURE_5000: ErrorMessage = { code: '5000', message: 'Please send payment information' };
+
+/**
+ * reservation failure
+ * @type {ErrorMessage}
+ */
+export const ERROR_RESERVATION_CANCEL_6003: ErrorMessage = { code: '6003', message: 'Error while cancelling reservation' };

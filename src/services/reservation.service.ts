@@ -2,6 +2,7 @@ import { Request, Response, NextFunction, response } from 'express';
 import { Reservation } from '../models/reservation.model';
 import { Customer } from '../models/customer.model';
 import { MongooseDocument, Mongoose } from 'mongoose';
+import * as ErrorMessages from '../constants/errors.constants';
 
 /**
  * @class ReservationServices
@@ -125,6 +126,32 @@ export class ReservationServices {
         }else {
             response.json([]);
         }        
+    }
+
+    /**
+     * cancel a reservation 
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public cancelReservation(request: Request, response: Response) {
+        const reservationId = request.params.reservationId;
+        if (reservationId) {
+            Reservation.findOneAndUpdate({ _id: reservationId }, { $set: 
+                { 
+                    isCanceled : true
+                }
+            }, { new:true, upsert: false })
+            .exec((errorReservation: Error, documentReservation: any) => {
+                if (errorReservation) {
+                    response.send(errorReservation);
+                    return;
+                }
+
+                response.json(documentReservation);    
+            });
+        }else {
+            response.send(ErrorMessages.ERROR_RESERVATION_CANCEL_6003);
+        }
     }
 
     /**

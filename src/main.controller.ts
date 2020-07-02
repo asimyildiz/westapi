@@ -204,6 +204,7 @@ export class Controller {
         this._application.route('/getCustomersOfUser/:userId').post(AuthHelper.authenticate, this._reservationServices.getCustomersOfUser);
          
         this._application.route('/addReservation').post(AuthHelper.authenticate, this._reservationServices.addReservation);
+        this._application.route('/cancelReservation/:reservationId').post(AuthHelper.authenticate, this._reservationServices.cancelReservation);
         this._application.route('/getAllReservations/:userId').post(AuthHelper.authenticate, this._reservationServices.getAllReservations);
     }
 
