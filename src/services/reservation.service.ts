@@ -110,6 +110,7 @@ export class ReservationServices {
         const userId = request.params.userId;
         if (userId) {
             Reservation.find({ user: userId })
+                .sort({ _id: -1 })
                 .populate('vehicle')
                 .populate('vehiclePrices')
                 .populate('vehiclePricesDiscounts')
