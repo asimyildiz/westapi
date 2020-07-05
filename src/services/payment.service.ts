@@ -178,10 +178,20 @@ export class PaymentServices {
             url: VPOS_API_URL,
             body: xmlRequest
         }, (error: any, httpResponse: any, body: any) => {
-            if (error) {
-                response.send(ERROR_PAYMENT_FAILURE_5000);
+            if (!error) {
+                const mpiResponse = httpResponse.toJSON();
+                const parser = new Xml2JS.Parser();
+                parser.parseString(mpiResponse.body, (err: any, result: any) => {
+                    if (result && result.VposResponse && 
+                        result.VposResponse.TransactionId && result.VposResponse.TransactionId.length > 0) {
+                            const paymentId = result.VposResponse.TransactionId[0];                            
+                            response.json({ success: true, paymentId: paymentId });
+                    }else {
+                        response.send(ERROR_PAYMENT_FAILURE_5000);
+                    }
+                });
             }else {
-                response.json({ success: true });
+                response.send(ERROR_PAYMENT_FAILURE_5000);                
             }
         });
     }
