@@ -44,17 +44,23 @@ export class RouteHelper {
         }
 
         let extras = [];
-        if (e) {    
-            const linestring = lineString(polylinePoints);
-            for (let i = 0; i < e.length; i++) {                
-                const snapped = nearestPointOnLine(linestring, point([parseFloat(e[i].lat), parseFloat(e[i].lon)]));
-                if (snapped && snapped.properties) {
-                    let isInLine = snapped.properties.dist ? (snapped.properties.dist <= 0.01) : false;
-                    if (isInLine) {
-                        extras.push(e[i]);
+        if (e) {
+            let linestring = null;
+            try {
+                linestring = lineString(polylinePoints);
+            }catch (error) {}
+            
+            if (linestring) {
+                for (let i = 0; i < e.length; i++) {                
+                    const snapped = nearestPointOnLine(linestring, point([parseFloat(e[i].lat), parseFloat(e[i].lon)]));
+                    if (snapped && snapped.properties) {
+                        let isInLine = snapped.properties.dist ? (snapped.properties.dist <= 0.01) : false;
+                        if (isInLine) {
+                            extras.push(e[i]);
+                        }
                     }
                 }
-            }
+            }            
         }
 
         return {
