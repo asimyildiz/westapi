@@ -3,11 +3,11 @@ dotenv.config();
 
 let path;
 switch (process.env.NODE_ENV) {
-  case "production":
-    path = `${__dirname}/../../.env.production`;
+  case "PRODUCTION":
+    path = `${__dirname}/../../.env.prod`;
     break;
   default:
-    path = `${__dirname}/../../.env.development`;
+    path = `${__dirname}/../../.env.dev`;
 }
 dotenv.config({ path: path });
 
@@ -18,22 +18,34 @@ dotenv.config({ path: path });
 export const PORT = process.env.PORT || 8080;
 
 /**
- * service api gateway url
- * @type {String}
- */
-export const WEST_API_URL = `http://westapi.westeurope.cloudapp.azure.com:${PORT}`;
-
-/**
  * service success and fail url
  * @type {String}
  */
 export const SUCCESS_FAIL_URL = `http://www.asimyildiz.com/animated-car`;
 
 /**
- * database connection string
- * @type {string}
+ * mongodb database url
+ * @type {String}
  */
-export const DATABASE_CONNECTION = 'mongodb://db:27017/WestApi';
+export const DATABASE_URL = `mongodb+srv://@${process.env.DATABASE_URL}`;
+
+/**
+ * mongodb database user
+ * @type {String}
+ */
+export const DATABASE_USER = process.env.DATABASE_USER;
+
+/**
+ * mongodb database user password
+ * @type {String}
+ */
+export const DATABASE_PASS = process.env.DATABASE_PASS;
+
+/**
+ * mongodb database name
+ * @type {String}
+ */
+export const DATABASE_NAME = process.env.DATABASE_NAME;
 
 /**
  * google map api key

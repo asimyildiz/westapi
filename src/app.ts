@@ -10,7 +10,10 @@ import { Controller } from './main.controller';
 import { FileHelper } from './utils/file.helper';
 
 import { 
-    DATABASE_CONNECTION, 
+    DATABASE_URL,
+    DATABASE_USER,
+    DATABASE_PASS,
+    DATABASE_NAME, 
     JSON_DATA_LIMIT, 
     FORM_DATA_LIMIT, 
     GOOGLEMAP_API_KEY,
@@ -95,10 +98,15 @@ class App {
      * @private
      */
     private _setDatabaseConfig() {
-        mongoose.Promise = global.Promise;
-        mongoose.connect(DATABASE_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+        mongoose.Promise = global.Promise;        
+        mongoose.connect(DATABASE_URL, { user: DATABASE_USER, pass: DATABASE_PASS, dbName: DATABASE_NAME, useNewUrlParser: true }, () => {
             // drop database if needed
             // mongoose.connection.db.dropDatabase();
+        });
+
+        mongoose.connection.on('error', (err) => {
+            console.error(`Mongoose connection error: ${err}`);
+            process.exit(1);
         });
     }
 
