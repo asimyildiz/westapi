@@ -130,6 +130,29 @@ export class ReservationServices {
     }
 
     /**
+     * get all reservations
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public getAllReservationsList(request: Request, response: Response) {
+        Reservation.find()
+            .sort({ _id: -1 })
+            .populate('vehicle')
+            .populate('vehiclePrices')
+            .populate('vehiclePricesDiscounts')
+            .populate('user')
+            .populate('customers')
+            .exec((errorReservation: Error, documentReservation: any) => {
+                if (errorReservation) {
+                    response.send(errorReservation);
+                    return;
+                }
+
+                response.json(documentReservation);  
+            });
+    }
+
+    /**
      * cancel a reservation 
      * @param request {Request} service request object
      * @param response {Response} service response object
