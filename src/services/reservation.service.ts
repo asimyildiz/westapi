@@ -32,16 +32,13 @@ export class ReservationServices {
      * @param response {Response} service response object
      */
     public addCustomers(request: Request, response: Response) {
-        Customer.insertMany(request.body.customers, { ordered: false }, (error: Error, document: MongooseDocument) => {  
-            Customer.find({ user: request.body.userId })
-                .exec(function (error: Error, customer: Document) {
-                    if (error) {
-                        response.send(error);
-                        return;
-                    }
+        Customer.insertMany(request.body.customers, { ordered: false }, (error: Error, document: MongooseDocument) => {
+            if (error) {
+                response.send(error);
+                return;
+            }
 
-                    response.json(customer);
-                });
+            response.json(document);            
         });            
     }
 
