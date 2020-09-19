@@ -4,7 +4,7 @@
   "description": "west project api",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon",
+    "start": "ts-node ./src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -54,7 +54,7 @@
     "@types/request": "^2.48.5",
     "@types/uuidv4": "^5.0.0",
     "@types/xml2js": "^0.4.5",
-    "nodemon": "^2.0.2",
+    "forever": "^3.0.0",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.4"
   }
