@@ -54,7 +54,7 @@ export class RouteHelper {
                 for (let i = 0; i < e.length; i++) {                
                     const snapped = nearestPointOnLine(linestring, point([parseFloat(e[i].lat), parseFloat(e[i].lon)]));
                     if (snapped && snapped.properties) {
-                        let isInLine = snapped.properties.dist ? (snapped.properties.dist <= 0.01) : false;
+                        let isInLine = snapped.properties.dist ? (snapped.properties.dist <= 0.1) : false;
                         if (isInLine) {
                             extras.push(e[i]);
                         }
