@@ -3,6 +3,7 @@ import { GoogleMapsClientWithPromise, Language, TravelMode, DirectionsRoute } fr
 import { MongooseDocument, Mongoose } from 'mongoose';
 import * as ErrorMessages from '../constants/errors.constants';
 import { Poi } from '../models/poi.model';
+import { Extras } from '../models/extras.model';
 import { TokenHelper } from '../utils/token.helper';
 import { RouteHelper } from '../utils/route.helper';
 import { 
@@ -58,28 +59,21 @@ export class LocationServices {
                 }else {
                     response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETROUTE_1001);
                 }
-            }).then((route) => {
+            }).then(this.getPoiAndExtras)
+            .then(([route, poi, extras]) => {
                 if (route) {
-                    Poi.find()            
-                        .exec((error: Error, document: MongooseDocument) => {
-                            if (error) {
-                                response.send(error);
-                                return;
-                            }
-
-                            const decodedRoute = RouteHelper.decode([{polyline: route.overview_polyline}], document);
-                            response.json({
-                                distance: route.legs.reduce((carry, curr) => {
-                                    return carry + curr.distance.value;
-                                }, 0) / 1000,
-                                duration: route.legs.reduce((carry, curr) => {
-                                    return carry + (curr.duration_in_traffic ? curr.duration_in_traffic.value : curr.duration.value);
-                                }, 0) / 60,
-                                coordinates: decodedRoute.points,
-                                extras: decodedRoute.extras,
-                                fare: route.fare
-                            });
-                        });
+                    const decodedRoute = RouteHelper.decode([{polyline: route.overview_polyline}], poi, extras);
+                    response.json({
+                        distance: route.legs.reduce((carry: any, curr: any) => {
+                            return carry + curr.distance.value;
+                        }, 0) / 1000,
+                        duration: route.legs.reduce((carry: any, curr: any) => {
+                            return carry + (curr.duration_in_traffic ? curr.duration_in_traffic.value : curr.duration.value);
+                        }, 0) / 60,
+                        coordinates: decodedRoute.points,
+                        extras: decodedRoute.extras,
+                        fare: route.fare
+                    });
                 }else {
                     response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETROUTE_1001);
                 }
@@ -87,6 +81,20 @@ export class LocationServices {
         }else {
             response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETROUTE_1001);
         }
+    }
+
+    /**
+     * return poi and extras with route object
+     * @param route 
+     * @returns {Promise}
+     */
+    private getPoiAndExtras(route?: any) {
+        return Promise.all([
+            Poi.find(),
+            Extras.find()
+        ]).then( ([ poi, extras ]) => {
+            return Promise.resolve([route, poi, extras])   
+        });
     }
 
     /**

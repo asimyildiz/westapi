@@ -75,7 +75,7 @@ export class PoiServices {
                     name : poiData.name,
                     lat : poiData.lat,
                     lon : poiData.lon,
-                    price : poiData.price
+                    target : poiData.target
                 }
             }, { upsert: true })
             .exec((errorPoi: Error, documentPoi: any) => {

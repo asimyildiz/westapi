@@ -13,10 +13,10 @@ const PoiSchema = new mongoose.Schema({
         type: String,
         required: 'Poi lon field is required'
     },
-    price: {
-        type: Number,
-        required: 'Poi price field is required'
-    }
+    target: [{
+        name: String,
+        price: Number
+    }]
 }, {
     collection: 'Poi',
     timestamps: true,

@@ -9,9 +9,24 @@ export class RouteHelper {
      * decode route data returned from directions service of google maps api
      * and return calculated coordinates to display on mapview polyline
      * @param t 
-     * @param e 
+     * @param poi {Object}
+     * @param extras {Object}
+     * @returns {Object}
      */
-    static decode(t: any, e?: any) {
+    static decode(t: any, poi: any, extras: any=[]) {
+        let [polylinePoints, points] = RouteHelper.findRoute(t);
+        RouteHelper.findExtras(polylinePoints, poi, extras);
+        return {
+            points: points,
+            extras: extras
+        };
+    }
+
+    /**
+     * find route
+     * @param t 
+     */
+    static findRoute(t: any) {
         let points = [];
         let polylinePoints = [];
         for (let step of t) {
@@ -43,29 +58,34 @@ export class RouteHelper {
             }
         }
 
-        let extras = [];
-        if (e) {
+        return [polylinePoints, points];
+    }
+    
+    /**
+     * populate extras
+     * @param polylinePoints 
+     * @param poi 
+     * @param extras 
+     */
+    static findExtras(polylinePoints: any, poi: any, extras: any) {
+        if (poi) {
             let linestring = null;
             try {
                 linestring = lineString(polylinePoints);
             }catch (error) {}
             
             if (linestring) {
-                for (let i = 0; i < e.length; i++) {                
-                    const snapped = nearestPointOnLine(linestring, point([parseFloat(e[i].lat), parseFloat(e[i].lon)]));
+                for (let i = 0; i < poi.length; i++) {                
+                    const snapped = nearestPointOnLine(linestring, point([parseFloat(poi[i].lat), parseFloat(poi[i].lon)]));
                     if (snapped && snapped.properties) {
                         let isInLine = snapped.properties.dist ? (snapped.properties.dist <= 0.1) : false;
                         if (isInLine) {
-                            extras.push(e[i]);
+                            extras.push(...poi[i].target);
+                            break;
                         }
                     }
                 }
             }            
         }
-
-        return {
-            points: points,
-            extras: extras
-        };
     }
 }
