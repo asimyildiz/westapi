@@ -46,6 +46,12 @@ export const ERROR_LOCATION_SERVICE_GETADDRESS_1002: ErrorMessage = { code: '100
 export const ERROR_LOCATION_SERVICE_ADDRESS_1003: ErrorMessage = { code: '1003', message: 'Please at least provide an address to location search'};
 
 /**
+ * address no service message
+ * @type {ErrorMessage}
+ */
+export const ERROR_LOCATION_SERVICE_NO_ADDRESS_1004: ErrorMessage = { code: '1004', message: 'There is no service on this city'};
+
+/**
  * file upload, no image is uploaded error message
  * @type {ErrorMessage}
  */

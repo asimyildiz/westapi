@@ -4,6 +4,7 @@ import { MongooseDocument, Mongoose } from 'mongoose';
 import * as ErrorMessages from '../constants/errors.constants';
 import { Poi } from '../models/poi.model';
 import { Extras } from '../models/extras.model';
+import { Cities } from '../models/cities.model';
 import { TokenHelper } from '../utils/token.helper';
 import { RouteHelper } from '../utils/route.helper';
 import { 
@@ -34,6 +35,8 @@ export class LocationServices {
         const fromLongitude = request.body.fromLongitude;
         const toLatitude = request.body.toLatitude;
         const toLongitude = request.body.toLongitude;
+        const fromAddress = request.body.fromAddress;
+        const toAddress = request.body.toAddress;
         const directionAddress = request.body.directionAddress;
         if (fromLatitude && fromLongitude && toLatitude && toLongitude && directionAddress) {
             let query = <any>{
@@ -45,39 +48,59 @@ export class LocationServices {
                 departure_time: 'now' //MAYBE PASS DATE AND TIME OF REQUEST
             };
             
-            const matches = directionAddress.toLocaleLowerCase().match(/istanbul/ig);
+            const currentAddress = directionAddress.toLocaleLowerCase();
+            const matches = currentAddress.match(/istanbul/ig);
             if (matches && matches.length != 2) {
                 query.avoid = ['tolls', 'ferries'];
             }
-            
-            this._googleMapApi.directions(query)
-            .asPromise()
-            .then((mapResponse) => {
-                const jsonResponse = mapResponse.json;
-                if (jsonResponse.status == 'OK' && jsonResponse.routes.length) {                       
-                    return Promise.resolve(jsonResponse.routes[0]);
-                }else {
-                    response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETROUTE_1001);
-                }
-            }).then(this.getPoiAndExtras)
-            .then(([route, poi, extras]) => {
-                if (route) {
-                    const decodedRoute = RouteHelper.decode([{polyline: route.overview_polyline}], poi, extras);
-                    response.json({
-                        distance: route.legs.reduce((carry: any, curr: any) => {
-                            return carry + curr.distance.value;
-                        }, 0) / 1000,
-                        duration: route.legs.reduce((carry: any, curr: any) => {
-                            return carry + (curr.duration_in_traffic ? curr.duration_in_traffic.value : curr.duration.value);
-                        }, 0) / 60,
-                        coordinates: decodedRoute.points,
-                        extras: decodedRoute.extras,
-                        fare: route.fare
-                    });
-                }else {
-                    response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETROUTE_1001);
-                }
-            }).catch(error => response.send(error));
+
+            Cities.find()
+                .exec()
+                .catch(err => [])
+                .then((cities: any) => {
+                    let extraTime = -1;
+                    for (let i = 0; i < cities.length; i++) {
+                        if (fromAddress.toLocaleLowerCase().indexOf(cities[i].name) > -1) {
+                            extraTime = cities[i].time;
+                            break;
+                        }
+                    }
+                    
+                    if (extraTime == -1) {
+                        response.send(ErrorMessages.ERROR_LOCATION_SERVICE_NO_ADDRESS_1004);
+                        return;
+                    }
+                    
+                    this._googleMapApi.directions(query)
+                        .asPromise()
+                        .then((mapResponse) => {
+                            const jsonResponse = mapResponse.json;
+                            if (jsonResponse.status == 'OK' && jsonResponse.routes.length) {                       
+                                return Promise.resolve(jsonResponse.routes[0]);
+                            }else {
+                                response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETROUTE_1001);
+                            }
+                        }).then(this.getPoiAndExtras)
+                        .then(([route, poi, extras]) => {
+                            if (route) {
+                                const decodedRoute = RouteHelper.decode([{polyline: route.overview_polyline}], poi, extras);
+                                response.json({
+                                    distance: route.legs.reduce((carry: any, curr: any) => {
+                                        return carry + curr.distance.value;
+                                    }, 0) / 1000,
+                                    duration: route.legs.reduce((carry: any, curr: any) => {
+                                        return carry + (curr.duration_in_traffic ? curr.duration_in_traffic.value : curr.duration.value);
+                                    }, 0) / 60,
+                                    coordinates: decodedRoute.points,
+                                    extras: decodedRoute.extras,
+                                    fare: route.fare,
+                                    extraTime: extraTime
+                                });
+                            }else {
+                                response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETROUTE_1001);
+                            }
+                        }).catch(error => response.send(error));
+                });
         }else {
             response.send(ErrorMessages.ERROR_LOCATION_SERVICE_GETROUTE_1001);
         }
