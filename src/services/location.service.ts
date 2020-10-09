@@ -48,7 +48,7 @@ export class LocationServices {
                 departure_time: 'now' //MAYBE PASS DATE AND TIME OF REQUEST
             };
             
-            const currentAddress = directionAddress.toLocaleLowerCase();
+            const currentAddress = directionAddress.toLocaleLowerCase('tr-TR');
             const matches = currentAddress.match(/istanbul/ig);
             if (matches && matches.length != 2) {
                 query.avoid = ['tolls', 'ferries'];
@@ -60,7 +60,7 @@ export class LocationServices {
                 .then((cities: any) => {
                     let extraTime = -1;
                     for (let i = 0; i < cities.length; i++) {
-                        if (fromAddress.toLocaleLowerCase().indexOf(cities[i].name) > -1) {
+                        if (fromAddress.toLocaleLowerCase('tr-TR').indexOf(cities[i].name) > -1) {
                             extraTime = cities[i].time;
                             break;
                         }
