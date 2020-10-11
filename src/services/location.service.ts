@@ -47,12 +47,6 @@ export class LocationServices {
                 units: 'metric',
                 departure_time: 'now' //MAYBE PASS DATE AND TIME OF REQUEST
             };
-            
-            const currentAddress = directionAddress.toLocaleLowerCase('tr-TR');
-            const matches = currentAddress.match(/istanbul/ig);
-            if (matches && matches.length != 2) {
-                query.avoid = ['tolls', 'ferries'];
-            }
 
             Cities.find()
                 .exec()

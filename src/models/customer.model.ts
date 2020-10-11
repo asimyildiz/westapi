@@ -14,6 +14,9 @@ const CustomerSchema = new mongoose.Schema({
         type: String,
         required: 'Customer passport field is required'
     },
+    nationality: {
+        type: String
+    },
     gender: {
         type: String,
         required: 'Customer gender field is required'

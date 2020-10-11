@@ -66,6 +66,9 @@ const ReservationSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    extras: {
+        type: [mongoose.Schema.Types.Mixed]
+    },
     customers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Customer'

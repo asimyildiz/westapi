@@ -81,7 +81,6 @@ export class RouteHelper {
                         let isInLine = snapped.properties.dist ? (snapped.properties.dist <= 0.1) : false;
                         if (isInLine) {
                             extras.push(...poi[i].target);
-                            break;
                         }
                     }
                 }
