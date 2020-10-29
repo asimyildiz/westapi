@@ -73,16 +73,16 @@ export class VehicleServices {
         let query = <any>{ isActive: true };
         if (goDate && typeof goDate == 'string') {
             query.startDate = {
-                "$gte": new Date(goDate)
+                "$lte": new Date(goDate)
             };
 
             if (returnDate && typeof returnDate == 'string') {
                 query.endDate = {
-                    "$lte": new Date(returnDate)
+                    "$gte": new Date(returnDate)
                 };
             }else {
                 query.endDate = {
-                    "$lte": new Date(goDate)
+                    "$gte": new Date(goDate)
                 };
             }
         }

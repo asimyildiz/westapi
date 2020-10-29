@@ -15,6 +15,7 @@ export class PriceHelper {
      */
     static calculate(vehicles?: any, origin?: any, destination?: any, distance?: any, extras?: any) {
         for (let i = 0; i < vehicles.length; i++) {
+            let discount = 0;
             let currentPrice = 0;
             let currentCurrency = 'try';
             const vehicle = vehicles[i];
@@ -27,12 +28,12 @@ export class PriceHelper {
                         currentPrice = distance * vehiclePrice.price;
                     }
 
-                    const discount = PriceHelper.calculateDiscount(currentPrice, vehiclePrice);
-                    currentPrice -= discount;
+                    discount = PriceHelper.calculateDiscount(currentPrice, vehiclePrice);
                     currentCurrency = vehiclePrice.currency;
                 }   
             }
             vehicle.price = currentPrice;
+            vehicle.discountedPrice = currentPrice - discount;
             vehicle.currency = currentCurrency;
         }        
     }
@@ -42,12 +43,12 @@ export class PriceHelper {
      * @param currentPrice 
      * @param vehiclePrice 
      */
-    static calculateDiscount(currentPrice?: any, vehiclePrice?: any) {
+    static calculateDiscount(currentPrice?: any, vehiclePrice?: any) {        
         if (vehiclePrice && vehiclePrice.vehiclePricesDiscounts) {
             for (let i = 0; i < vehiclePrice.vehiclePricesDiscounts.length; i++) {
                 const vehiclePriceDiscount = vehiclePrice.vehiclePricesDiscounts[i];
-                if (vehiclePriceDiscount && vehiclePriceDiscount.minPriceToApply > currentPrice) {
-                    return vehiclePriceDiscount.discount;
+                if (vehiclePriceDiscount && vehiclePriceDiscount.minPriceToApply <= currentPrice) {
+                    return (currentPrice * vehiclePriceDiscount.discount) / 100;
                 }
             }
         }
