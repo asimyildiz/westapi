@@ -19,18 +19,16 @@ export class PriceHelper {
             let currentPrice = 0;
             let currentCurrency = 'try';
             const vehicle = vehicles[i];
-            if (vehicle && vehicle.vehiclePrices) {
-                for (let j = 0; j < vehicle.vehiclePrices.length; j++) {
-                    const vehiclePrice = vehicle.vehiclePrices[j];
-                    if (vehiclePrice.minDistance > distance) {
-                        currentPrice = vehiclePrice.minPrice;
-                    }else {
-                        currentPrice = distance * vehiclePrice.price;
-                    }
+            if (vehicle && vehicle.vehiclePrices) {                
+                const vehiclePrice = vehicle.vehiclePrices;
+                if (vehiclePrice.minDistance > distance) {
+                    currentPrice = vehiclePrice.minPrice;
+                }else {
+                    currentPrice = distance * vehiclePrice.price;
+                }
 
-                    discount = PriceHelper.calculateDiscount(currentPrice, vehiclePrice);
-                    currentCurrency = vehiclePrice.currency;
-                }   
+                discount = PriceHelper.calculateDiscount(currentPrice, vehiclePrice, distance);
+                currentCurrency = vehiclePrice.currency;
             }
             vehicle.price = currentPrice;
             vehicle.discountedPrice = currentPrice - discount;
@@ -42,13 +40,21 @@ export class PriceHelper {
      * calculate discount for current vehicle price
      * @param currentPrice 
      * @param vehiclePrice 
+     * @param distance
      */
-    static calculateDiscount(currentPrice?: any, vehiclePrice?: any) {        
-        if (vehiclePrice && vehiclePrice.vehiclePricesDiscounts) {
+    static calculateDiscount(currentPrice?: any, vehiclePrice?: any, distance?: any) {        
+        if (vehiclePrice && vehiclePrice.vehiclePricesDiscounts) {            
             for (let i = 0; i < vehiclePrice.vehiclePricesDiscounts.length; i++) {
                 const vehiclePriceDiscount = vehiclePrice.vehiclePricesDiscounts[i];
-                if (vehiclePriceDiscount && vehiclePriceDiscount.minPriceToApply <= currentPrice) {
-                    return (currentPrice * vehiclePriceDiscount.discount) / 100;
+                if (vehiclePriceDiscount && vehiclePriceDiscount.distanceToApply <= distance) {
+                    if (vehiclePriceDiscount.discount != 0) {
+                        let discountedPrice = currentPrice - vehiclePriceDiscount.discount;
+                        return discountedPrice > 0 ? vehiclePriceDiscount.discount : 0;
+                    }else if (vehiclePriceDiscount.discountPercentage != 0) {
+                        let discount = (currentPrice * vehiclePriceDiscount.discountPercentage) / 100;
+                        let discountedPrice = currentPrice - discount;
+                        return discountedPrice > 0 ? discount : 0;
+                    }                    
                 }
             }
         }

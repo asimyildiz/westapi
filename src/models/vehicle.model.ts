@@ -21,13 +21,13 @@ const VehicleSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    images: [{
-        type: String
-    }],
-    vehiclePrices: [{
+    vehiclePrices: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'VehiclePrices'
-    }],
+    },
+    images: [{
+        type: String
+    }],    
     services: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Service'

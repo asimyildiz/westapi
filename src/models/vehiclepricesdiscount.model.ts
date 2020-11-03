@@ -3,11 +3,15 @@ import mongoose from "mongoose";
 const VehiclePricesDiscountSchema = new mongoose.Schema({
     discount: {
         type: Number,
-        required: 'Discount percentage field is required'
+        default: 0
     },
-    minPriceToApply: {
+    discountPercentage: {
         type: Number,
-        required: 'Discount min price to apply field is required'
+        default: 0
+    },
+    distanceToApply: {
+        type: Number,
+        required: 'Min distance to apply field is required'
     },
     startDate: {
         type: Date,

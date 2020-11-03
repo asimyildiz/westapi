@@ -45,6 +45,9 @@ export class VehicleServices {
                     path: 'vehiclePricesDiscounts',
                     model: 'VehiclePricesDiscount',                    
                     match: query,
+                    options: {
+                        sort: { 'distanceToApply': -1 }
+                    }
                 }
             })
             .populate({
