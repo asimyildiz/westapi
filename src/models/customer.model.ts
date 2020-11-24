@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 
 // TODO add multiple validation for both User&&passport
 const CustomerSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
     name: {
         type: String,
         required: 'Customer name field is required'
