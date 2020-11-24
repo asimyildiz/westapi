@@ -13,6 +13,9 @@ const ServiceSchema = new mongoose.Schema({
         type: Boolean,
         required: 'Service paid status is required'
     },
+    translation: {
+        type: [mongoose.Schema.Types.Mixed]
+    },
     price: {
         type: Number,
         default: 0

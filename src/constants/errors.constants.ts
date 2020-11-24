@@ -104,3 +104,9 @@ export const ERROR_PAYMENT_FAILURE_5000: ErrorMessage = { code: '5000', message:
  * @type {ErrorMessage}
  */
 export const ERROR_RESERVATION_CANCEL_6003: ErrorMessage = { code: '6003', message: 'Error while cancelling reservation' };
+
+/**
+ * reservation failure
+ * @type {ErrorMessage}
+ */
+export const ERROR_RESERVATION_COMPLETE_6004: ErrorMessage = { code: '6004', message: 'Error while completing reservation' };

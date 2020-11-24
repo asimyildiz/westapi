@@ -5,6 +5,9 @@ const ExtrasSchema = new mongoose.Schema({
         type: String,
         required: 'Extras name field is required'
     },
+    translation: {
+        type: [mongoose.Schema.Types.Mixed]
+    },
     price: {
         type: Number,
         required: 'Extras price field is required'

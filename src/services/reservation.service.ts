@@ -38,8 +38,8 @@ export class ReservationServices {
                 return;
             }
 
-            response.json(document);            
-        });            
+            response.json(document);
+        });
     }
 
     /**
@@ -51,15 +51,15 @@ export class ReservationServices {
         const userId = request.params.userId;
         if (userId) {
             Customer.findOne({ user: userId })
-            .exec(function (error: Error, customer: Document) {
-                if (error) {
-                    response.send(error);
-                    return;
-                }
+                .exec(function (error: Error, customer: Document) {
+                    if (error) {
+                        response.send(error);
+                        return;
+                    }
 
-                response.json(customer);
-            });
-        }else {
+                    response.json(customer);
+                });
+        } else {
             response.json([]);
         }
     }
@@ -78,7 +78,7 @@ export class ReservationServices {
             }
 
             if (request.body.customers) {
-                Reservation.findOneAndUpdate({ _id: document._id }, { $addToSet: { customers: request.params.customers }})
+                Reservation.findOneAndUpdate({ _id: document._id }, { $addToSet: { customers: request.params.customers } })
                     .populate('vehicle')
                     .populate('vehiclePrices')
                     .populate('vehiclePricesDiscounts')
@@ -90,9 +90,9 @@ export class ReservationServices {
                             return;
                         }
 
-                        response.json(documentReservation);  
+                        response.json(documentReservation);
                     });
-            }else {            
+            } else {
                 response.json(document);
             }
         });
@@ -119,11 +119,11 @@ export class ReservationServices {
                         return;
                     }
 
-                    response.json(documentReservation);  
+                    response.json(documentReservation);
                 });
-        }else {
+        } else {
             response.json([]);
-        }        
+        }
     }
 
     /**
@@ -145,7 +145,7 @@ export class ReservationServices {
                     return;
                 }
 
-                response.json(documentReservation);  
+                response.json(documentReservation);
             });
     }
 
@@ -157,21 +157,50 @@ export class ReservationServices {
     public cancelReservation(request: Request, response: Response) {
         const reservationId = request.params.reservationId;
         if (reservationId) {
-            Reservation.findOneAndUpdate({ _id: reservationId }, { $set: 
-                { 
-                    isCanceled : true
+            Reservation.findOneAndUpdate({ _id: reservationId }, {
+                $set:
+                {
+                    isCanceled: true
                 }
-            }, { new:true, upsert: false })
-            .exec((errorReservation: Error, documentReservation: any) => {
-                if (errorReservation) {
-                    response.send(errorReservation);
-                    return;
-                }
+            }, { new: true, upsert: false })
+                .exec((errorReservation: Error, documentReservation: any) => {
+                    if (errorReservation) {
+                        response.send(errorReservation);
+                        return;
+                    }
 
-                response.json(documentReservation);    
-            });
-        }else {
+                    response.json(documentReservation);
+                });
+        } else {
             response.send(ErrorMessages.ERROR_RESERVATION_CANCEL_6003);
+        }
+    }
+
+    /**
+     * cancel a reservation 
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public completeReservation(request: Request, response: Response) {
+        const reservationId = request.params.reservationId;
+        const status = request.body.status;
+        if (reservationId && typeof status == 'boolean') {
+            Reservation.findOneAndUpdate({ _id: reservationId }, {
+                $set:
+                {
+                    isCompleted: status
+                }
+            }, { new: true, upsert: false })
+                .exec((errorReservation: Error, documentReservation: any) => {
+                    if (errorReservation) {
+                        response.send(errorReservation);
+                        return;
+                    }
+
+                    response.json(documentReservation);
+                });
+        } else {
+            response.send(ErrorMessages.ERROR_RESERVATION_COMPLETE_6004);
         }
     }
 
