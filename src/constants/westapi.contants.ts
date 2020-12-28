@@ -21,7 +21,13 @@ export const PORT = process.env.PORT || 8080;
  * service success and fail url
  * @type {String}
  */
-export const SUCCESS_FAIL_URL = `http://www.asimyildiz.com/animated-car`;
+export const SUCCESS_FAIL_URL = `https://www.westtourismcenter.com`;
+
+/**
+ * result url
+ * @type {String}
+ */
+export const RESULT_URL = `http://www.asimyildiz.com/animated-car`;
 
 /**
  * mongodb database url

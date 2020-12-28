@@ -242,6 +242,7 @@ export class Controller {
      * @private
      */
     private _addPaymentServiceRoutes() {
-        this._application.route('/pay').post(this._paymentServices.enroll.bind(this._paymentServices));        
+        this._application.route('/pay').post(AuthHelper.authenticate, this._paymentServices.enroll.bind(this._paymentServices));    
+        this._application.route('/provision').post(this._paymentServices.provision.bind(this._paymentServices));        
     }
 }

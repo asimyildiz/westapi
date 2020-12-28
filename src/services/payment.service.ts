@@ -10,7 +10,8 @@ import {
     PAYMENT_MERCHANT_TERMINAL,
     SUCCESS_FAIL_URL,
     ENROLLMENT_API_URL,
-    VPOS_API_URL
+    VPOS_API_URL,
+    RESULT_URL
 } from '../constants/westapi.contants';
 import {
     ERROR_PAYMENT_FAILURE_5000
@@ -21,6 +22,13 @@ import {
  * @classdesc payment service api methods
  */
 export class PaymentServices {
+
+    /**
+     * token for google map api calls
+     * @type {string}
+     * @static
+     */
+    private static session: any = {};
 
     /**
      * mpi status success
@@ -97,10 +105,10 @@ export class PaymentServices {
         const locale = request.body.locale;
         const clientIp = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
         const paymentId = TokenHelper.generateNewToken();
-        const successUrl = `${SUCCESS_FAIL_URL}/index-success.html?id=1&lang=${locale}`;
-        const failureUrl = `${SUCCESS_FAIL_URL}/index-failed.html?id=1&lang=${locale}`;
+        const successUrl = `${SUCCESS_FAIL_URL}/provision`;
+        const failureUrl = `${RESULT_URL}/index-failed.html?id=1&lang=${locale}`;
         if (creditCardNumber && expiryDate && cardType && amount && currency) {
-            const paymentData = {
+            let paymentData = <any> {
                 Pan: creditCardNumber.replace(/\s/g,''),
                 ExpiryDate: expiryDate.split('/').reverse().join(''),
                 PurchaseAmount: parseFloat(amount).toFixed(2),
@@ -111,7 +119,7 @@ export class PaymentServices {
                 MerchantPassword: PAYMENT_MERCHANT_PASSWORD,
                 SuccessUrl: successUrl,
                 FailureUrl: failureUrl
-            };
+            };            
 
             HttpRequest.post({
                 url: ENROLLMENT_API_URL,
@@ -126,14 +134,20 @@ export class PaymentServices {
                             result.IPaySecure.Message[0].VERes && result.IPaySecure.Message[0].VERes.length > 0 &&
                             result.IPaySecure.Message[0].VERes[0].Status && result.IPaySecure.Message[0].VERes[0].Status.length > 0) {
                                 const status = result.IPaySecure.Message[0].VERes[0].Status[0];
-                                if (status == this.MPI_SUCCESS) {                                
+                                // update payment data                                
+                                paymentData.Name = name;
+                                paymentData.CVC = cvc;
+                                paymentData.ClientIp = clientIp;
+                                paymentData.Locale = locale;
+                                if (status == this.MPI_SUCCESS) {
+                                    PaymentServices.session[paymentId] = paymentData;
                                     const paymentResponse = {
                                         veres: result.IPaySecure.Message[0].VERes[0],
                                         paymentId: paymentId
                                     }
                                     response.json(paymentResponse);
                                 }else if (status == this.MPI_NO3D) {
-                                    this.payWithPos(paymentData, name, cvc, clientIp, response);
+                                    this.payWithPos(paymentData, null, response);
                                 }else if (this.MPI_FAILURE.indexOf(status) > -1) {                                    
                                     response.send(ERROR_PAYMENT_FAILURE_5000);
                                 }
@@ -149,49 +163,131 @@ export class PaymentServices {
     }
 
     /**
+     * provision card for 3d secure
+     * @param request {Request} service request object
+     * @param response {Response} service response object
+     */
+    public provision(request: Request, response: Response) {     
+        const status = request.body.Status;
+        const paymentId = request.body.VerifyEnrollmentRequestId;
+        const paymentData = PaymentServices.session[paymentId];
+        if ((status == 'Y' || status == 'A') && paymentData != null) {
+            const optional = {
+                ECI: request.body.Eci,
+                CAVV: request.body.Cavv,
+                PAYMENT_ID: paymentId
+            };
+            this.payWithPos(paymentData, optional, response);
+        }else {
+            const failedUrl = `${RESULT_URL}/index-failed.html?id=1&lang=${(paymentData && paymentData.Locale) || 'tr_TR'}`;
+            response.redirect(307, failedUrl);
+        }
+    }
+
+    /**
      * no 3d secure payment
      * @param paymentData {any}
-     * @param name {any}
-     * @param cvc {any}
+     * @param optional {any}
      * @param clientIp {any}
      * @param response {Response}
      */
-    private payWithPos(paymentData: any, name: any, cvc: any, clientIp: any, response: Response) {
-        const xmlRequest = `prmstr=<VposRequest>
+    private payWithPos(paymentData: any, optional: any, response: Response) {
+        const xmlRequest = `prmstr=<?xml version="1.0" encoding="utf-8" ?>
+            <VposRequest>
             <MerchantId>${paymentData.MerchantId}</MerchantId>
             <Password>${paymentData.MerchantPassword}</Password>
             <TerminalNo>${PAYMENT_MERCHANT_TERMINAL}</TerminalNo>
             <TransactionType>${this.TRANSACTION_TYPE}</TransactionType>
             <TransactionId>${paymentData.VerifyEnrollmentRequestId}</TransactionId>
             <CurrencyAmount>${paymentData.PurchaseAmount}</CurrencyAmount>
-            <CurrencyCode>${paymentData.Currency}</CurrencyCode>
-            <CardHoldersName>${name}</CardHoldersName>
+            <CurrencyCode>${paymentData.Currency}</CurrencyCode>        
+            <BrandName>${paymentData.BrandName}</BrandName>    
             <Pan>${paymentData.Pan}</Pan>
-            <Expiry>${paymentData.ExpiryDate}</Expiry>
-            <Cvv>${cvc}</Cvv>
+            <Expiry>20${paymentData.ExpiryDate}</Expiry>
+            <Cvv>${paymentData.CVC}</Cvv>            
             <TransactionDeviceSource>0</TransactionDeviceSource>
-            <ClientIp>${clientIp}</ClientIp>
+            ${optional ? '<ECI>' + optional.ECI + '</ECI>' : ''}
+            ${optional ? '<CAVV>' + optional.CAVV + '</CAVV>' : ''}
+            ${optional ? '<MpiTransactionId>' + optional.PAYMENT_ID + '</MpiTransactionId>' : ''}
+            <ClientIp>${paymentData.ClientIp}</ClientIp>
             </VposRequest>`;
 
         HttpRequest.post({
-            url: VPOS_API_URL,
-            body: xmlRequest
-        }, (error: any, httpResponse: any, body: any) => {
+            url: VPOS_API_URL,            
+            method: "POST",
+            body: xmlRequest,
+            headers: {                
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }, (error: any, httpResponse: any, body: any) => {            
             if (!error) {
                 const mpiResponse = httpResponse.toJSON();
                 const parser = new Xml2JS.Parser();
                 parser.parseString(mpiResponse.body, (err: any, result: any) => {
+                    let status = '';
+                    let paymentId = '';                    
                     if (result && result.VposResponse && 
-                        result.VposResponse.TransactionId && result.VposResponse.TransactionId.length > 0) {
-                            const paymentId = result.VposResponse.TransactionId[0];                            
-                            response.json({ success: true, paymentId: paymentId });
-                    }else {
-                        response.send(ERROR_PAYMENT_FAILURE_5000);
+                        result.VposResponse.TransactionId && result.VposResponse.TransactionId.length > 0 &&
+                        result.VposResponse.ResultCode && result.VposResponse.ResultCode.length > 0) {
+                            status = result.VposResponse.ResultCode[0];
+                            paymentId = result.VposResponse.TransactionId[0];                                                        
                     }
+                    this.handleResponse(status, paymentData, optional, response);
                 });
             }else {
-                response.send(ERROR_PAYMENT_FAILURE_5000);                
+                this.handleResponse(null, null, null, response);          
             }
         });
+    }
+
+    /**
+     * handle response of vpos request
+     * @param status {any}
+     * @param paymentData {any} 
+     * @param optional {any}
+     * @param response {Response}
+     */
+    private handleResponse(status: any, paymentData: any, optional: any, response: Response) {
+        const paymentId = paymentData && paymentData.VerifyEnrollmentRequestId;
+        const locale = paymentData && paymentData.Locale;        
+        if (optional == null) {
+            this.handleResponseForNonSecurePayment(status, paymentId, response);
+        }else {
+            this.handleResponseForSecurePayment(status, paymentId, locale, response);
+        }        
+    }
+
+    /**
+     * handle response for non-secure payment
+     * @param status {any}
+     * @param paymentId {any}
+     * @param response {Response}
+     */
+    private handleResponseForNonSecurePayment(status: any, paymentId: any, response: Response) {
+        if (status == '0000') {
+            response.json({ success: true, paymentId: paymentId });
+        }else {
+            response.send(ERROR_PAYMENT_FAILURE_5000);
+        }
+    }
+
+    /**
+     * handle response for secure payment
+     * @param status {any}
+     * @param paymentId {any}
+     * @param locale {any}
+     * @param response {Response}
+     */
+    private handleResponseForSecurePayment(status: any, paymentId: any, locale: any, response: Response) {
+        let url = `${RESULT_URL}/index-failed.html?id=1&lang=${locale || 'tr_TR'}`; 
+        if (status == '0000') {
+            url = `${RESULT_URL}/index-success.html?id=1&lang=${locale || 'tr_TR'}`;
+        }
+        // set current session to null because it is finished 
+        if (PaymentServices.session[paymentId]) {
+            PaymentServices.session[paymentId] = null;
+        }        
+
+        response.redirect(307, url);
     }
 }
