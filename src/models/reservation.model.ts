@@ -66,6 +66,9 @@ const ReservationSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    billInfo: {
+        type: [mongoose.Schema.Types.Mixed]
+    },
     extras: {
         type: [mongoose.Schema.Types.Mixed]
     },
